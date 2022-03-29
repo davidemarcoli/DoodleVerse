@@ -3,6 +3,7 @@ package com.dala.views.helloworld;
 import com.dala.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
@@ -12,7 +13,6 @@ import javax.annotation.security.PermitAll;
 
 @PageTitle("Hello World")
 @Route(value = "hello", layout = MainLayout.class)
-@RouteAlias(value = "", layout = MainLayout.class)
 @PermitAll
 public class HelloWorldView extends HorizontalLayout {
 
@@ -23,7 +23,8 @@ public class HelloWorldView extends HorizontalLayout {
         name = new TextField("Your name");
         sayHello = new Button("Say hello");
         sayHello.addClickListener(e -> {
-            Notification.show("Hello " + name.getValue());
+            Notification notification = Notification.show("Hello " + name.getValue(), 5000, Notification.Position.BOTTOM_CENTER);
+            notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
         });
 
         setMargin(true);
