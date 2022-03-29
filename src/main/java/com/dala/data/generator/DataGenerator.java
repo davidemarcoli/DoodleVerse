@@ -29,20 +29,21 @@ public class DataGenerator {
 
             logger.info("... generating 2 User entities...");
             User user = new User();
-            user.setName("John Normal");
-            user.setUsername("user");
-            user.setHashedPassword(passwordEncoder.encode("user"));
+            user.setName("Davide Marcoli");
+            user.setUsername("davide");
+            user.setHashedPassword(passwordEncoder.encode("davide"));
             user.setProfilePictureUrl(
                     "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80");
             user.setRoles(Collections.singleton(Role.USER));
             userRepository.save(user);
             User admin = new User();
-            admin.setName("Emma Powerful");
-            admin.setUsername("admin");
-            admin.setHashedPassword(passwordEncoder.encode("admin"));
+            admin.setName("Lazar Petrović");
+            admin.setUsername("lazar");
+            admin.setHashedPassword(passwordEncoder.encode("lazar"));
             admin.setProfilePictureUrl(
                     "https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80");
             admin.setRoles(Set.of(Role.USER, Role.ADMIN));
+//            admin.setRoles(Collections.singleton(Role.ADMIN));
             userRepository.save(admin);
 
             logger.info("Generated demo data");
