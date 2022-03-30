@@ -11,7 +11,7 @@ import javax.annotation.security.RolesAllowed;
 
 @PageTitle("About")
 @Route(value = "about", layout = MainLayout.class)
-@RolesAllowed("ADMIN")
+@RolesAllowed("ROLE_ADMIN")
 public class AboutView extends VerticalLayout {
 
     public AboutView() {

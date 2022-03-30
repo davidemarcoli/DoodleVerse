@@ -9,13 +9,15 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import org.springframework.context.annotation.Role;
+
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 
 @PageTitle("Hello World")
 @Route(value = "hello", layout = MainLayout.class)
-//@PermitAll
-@RolesAllowed("USER")
+@PermitAll
+//@RolesAllowed("ROLE_USER")
 public class HelloWorldView extends HorizontalLayout {
 
     private TextField name;
