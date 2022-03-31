@@ -1,7 +1,7 @@
 package com.dala.security;
 
-import com.dala.data.entity.User;
-import com.dala.data.service.UserRepository;
+import com.dala.data.user.User;
+import com.dala.data.user.UserRepository;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.server.VaadinServletRequest;
 import java.util.Optional;

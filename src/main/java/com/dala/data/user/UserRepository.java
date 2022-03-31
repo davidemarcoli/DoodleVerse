@@ -1,6 +1,5 @@
-package com.dala.data.service;
+package com.dala.data.user;
 
-import com.dala.data.entity.User;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 

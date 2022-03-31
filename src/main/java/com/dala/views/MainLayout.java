@@ -1,6 +1,6 @@
 package com.dala.views;
 
-import com.dala.data.entity.User;
+import com.dala.data.user.User;
 import com.dala.security.AuthenticatedUser;
 import com.dala.views.about.AboutView;
 import com.dala.views.helloworld.HelloWorldView;

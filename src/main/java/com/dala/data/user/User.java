@@ -1,6 +1,7 @@
-package com.dala.data.entity;
+package com.dala.data.user;
 
-import com.dala.data.Role;
+import com.dala.security.Role;
+import com.dala.data.entity.AbstractEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 

@@ -1,11 +1,11 @@
 package com.dala.data.generator;
 
-import com.dala.data.Role;
-import com.dala.data.entity.User;
-import com.dala.data.service.UserRepository;
+import com.dala.security.Role;
+import com.dala.data.user.User;
+import com.dala.data.user.UserRepository;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import java.util.Collections;
-import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;

@@ -1,7 +1,7 @@
 package com.dala.security;
 
-import com.dala.data.entity.User;
-import com.dala.data.service.UserRepository;
+import com.dala.data.user.User;
+import com.dala.data.user.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
