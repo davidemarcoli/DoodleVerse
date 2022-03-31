@@ -4,6 +4,7 @@ import com.dala.data.user.User;
 import com.dala.security.AuthenticatedUser;
 import com.dala.views.about.AboutView;
 import com.dala.views.helloworld.HelloWorldView;
+import com.dala.views.person.PersonListView;
 import com.dala.views.test.TestView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -132,7 +133,8 @@ public class MainLayout extends AppLayout {
         return new MenuItemInfo[]{ //
                 new MenuItemInfo("Test", "la la-globe", TestView.class), //
                 new MenuItemInfo("Hello World", "la la-globe", HelloWorldView.class), //
-                new MenuItemInfo("About", "la la-file", AboutView.class), //
+                new MenuItemInfo("About", "la la-address-card", AboutView.class), //
+                new MenuItemInfo("Person List", "la la-th-list", PersonListView.class), //
         };
     }
 
