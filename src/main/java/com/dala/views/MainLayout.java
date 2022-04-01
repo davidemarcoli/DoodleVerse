@@ -2,7 +2,7 @@ package com.dala.views;
 
 import com.dala.data.user.User;
 import com.dala.security.AuthenticatedUser;
-import com.dala.views.about.HomeView;
+import com.dala.views.home.HomeView;
 import com.dala.views.helloworld.HelloWorldView;
 import com.dala.views.test.TestView;
 import com.vaadin.flow.component.Component;
