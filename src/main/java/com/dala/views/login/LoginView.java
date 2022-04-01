@@ -18,8 +18,7 @@ public class LoginView extends LoginOverlay {
         i18n.setAdditionalInformation(null);
         setI18n(i18n);
 
-        setForgotPasswordButtonVisible(false);
+        setForgotPasswordButtonVisible(true);
         setOpened(true);
     }
-
 }
