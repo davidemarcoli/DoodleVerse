@@ -12,7 +12,7 @@ import com.vaadin.flow.router.Route;
 import javax.annotation.security.RolesAllowed;
 
 @PageTitle("Home")
-@Route(value = "home", layout = MainLayout.class)
+@Route(value = "", layout = MainLayout.class)
 @RolesAllowed("ROLE_ADMIN")
 public class HomeView extends VerticalLayout {
 

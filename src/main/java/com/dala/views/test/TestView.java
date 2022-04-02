@@ -10,7 +10,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 @PageTitle("Test")
 @Route(value = "test", layout = MainLayout.class)
-@RouteAlias(value = "", layout = MainLayout.class)
+@RouteAlias(value = "test", layout = MainLayout.class)
 @AnonymousAllowed
 public class TestView extends VerticalLayout {
 
