@@ -3,8 +3,6 @@ package com.dala.views;
 import com.dala.data.user.User;
 import com.dala.security.AuthenticatedUser;
 import com.dala.views.home.HomeView;
-import com.dala.views.helloworld.HelloWorldView;
-import com.dala.views.play.PlayView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -24,6 +22,7 @@ import com.vaadin.flow.component.html.UnorderedList;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
+
 import java.util.Optional;
 
 /**
@@ -129,9 +128,8 @@ public class MainLayout extends AppLayout {
     }
 
     private MenuItemInfo[] createMenuItems() {
-        return new MenuItemInfo[]{ //
-                new MenuItemInfo("Home", "la la-home", HomeView.class), //
-                new MenuItemInfo("Hello World", "la la-globe", HelloWorldView.class), //
+        return new MenuItemInfo[]{
+                new MenuItemInfo("Home", "la la-home", HomeView.class)
         };
     }
 
