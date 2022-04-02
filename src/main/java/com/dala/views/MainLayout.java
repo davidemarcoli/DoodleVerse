@@ -4,7 +4,7 @@ import com.dala.data.user.User;
 import com.dala.security.AuthenticatedUser;
 import com.dala.views.home.HomeView;
 import com.dala.views.helloworld.HelloWorldView;
-import com.dala.views.test.TestView;
+import com.dala.views.play.PlayView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -131,7 +131,6 @@ public class MainLayout extends AppLayout {
     private MenuItemInfo[] createMenuItems() {
         return new MenuItemInfo[]{ //
                 new MenuItemInfo("Home", "la la-home", HomeView.class), //
-                new MenuItemInfo("Test", "la la-globe", TestView.class), //
                 new MenuItemInfo("Hello World", "la la-globe", HelloWorldView.class), //
         };
     }
