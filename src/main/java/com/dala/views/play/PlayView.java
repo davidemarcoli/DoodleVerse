@@ -1,6 +1,7 @@
 package com.dala.views.play;
 
 import com.dala.views.MainLayout;
+import com.dala.views.citymgmt.CityManagementView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -35,8 +36,11 @@ public class PlayView extends VerticalLayout {
 
         Button secondaryButton = new Button("Manage city");
         secondaryButton.addThemeVariants(ButtonVariant.LUMO_CONTRAST, ButtonVariant.LUMO_LARGE);
-        horizontalLayout.add(primaryButton);
-        horizontalLayout.add(secondaryButton);
+        secondaryButton.addClickListener(e -> {
+            UI.getCurrent().navigate(CityManagementView.class);
+        });
+        
+        horizontalLayout.add(primaryButton, secondaryButton);
 
         add(horizontalLayout);
 
@@ -45,5 +49,4 @@ public class PlayView extends VerticalLayout {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         getStyle().set("text-align", "center");
     }
-
 }
