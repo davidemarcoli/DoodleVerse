@@ -39,7 +39,7 @@ public class PlayView extends VerticalLayout {
         secondaryButton.addClickListener(e -> {
             UI.getCurrent().navigate(CityManagementView.class);
         });
-        
+
         horizontalLayout.add(primaryButton, secondaryButton);
 
         add(horizontalLayout);
