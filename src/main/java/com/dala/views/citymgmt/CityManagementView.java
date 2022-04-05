@@ -19,7 +19,6 @@ import javax.annotation.security.PermitAll;
 
 @PageTitle("Manage City")
 @Route(value = "citymgmt", layout = MainLayout.class)
-@RouteAlias(value = "citymgmt", layout = MainLayout.class)
 @PermitAll
 public class CityManagementView extends VerticalLayout {
 

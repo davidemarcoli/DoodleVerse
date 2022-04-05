@@ -1,6 +1,7 @@
 package com.dala.views.play;
 
 import com.dala.views.MainLayout;
+import com.dala.views.citizensmgmt.CitizenManagementView;
 import com.dala.views.citymgmt.CityManagementView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -32,9 +33,9 @@ public class PlayView extends VerticalLayout {
 
         Button primaryButton = new Button("Manage citizens");
         primaryButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_LARGE);
-        /*primaryButton.addClickListener(e -> {
-            UI.getCurrent().navigate(PlayView.class);
-        });*/
+        primaryButton.addClickListener(e -> {
+            UI.getCurrent().navigate(CitizenManagementView.class);
+        });
 
         Button secondaryButton = new Button("Manage city");
         secondaryButton.addThemeVariants(ButtonVariant.LUMO_CONTRAST, ButtonVariant.LUMO_LARGE);
