@@ -1,26 +1,32 @@
 package com.dala.data.user;
 
-import com.dala.security.Role;
-import com.dala.data.entity.AbstractEntity;
+import com.dala.security.role.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+import lombok.*;
 
-import java.util.Set;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Data
-@Table(name = "application_user")
-public class User extends AbstractEntity {
+@Setter @Getter
+@AllArgsConstructor @NoArgsConstructor
+@Table(name = "users")
+public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @Column(unique = true)
     private String username;
     private String name;
     @JsonIgnore
     private String hashedPassword;
-    @Enumerated(EnumType.STRING)
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<Role> roles;
+    @ManyToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private List<Role> roles;
     @Lob
     private String profilePictureUrl;
 }
