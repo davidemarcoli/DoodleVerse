@@ -1,8 +1,10 @@
 package com.dala.views.citizensmgmt;
 
+import com.dala.data.generator.FakeGenerator;
 import com.dala.data.person.Person;
 import com.dala.data.person.PersonDataProvider;
 import com.dala.data.person.PersonRepository;
+import com.dala.utils.MathUtils;
 import com.dala.views.MainLayout;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.button.Button;
@@ -151,7 +153,9 @@ public class CitizenManagementView extends VerticalLayout {
 
         Button button = new Button("New person", VaadinIcon.PLUS.create());
         button.addClickListener(event -> {
-            crud.edit(new Person(), Crud.EditMode.NEW_ITEM);
+            Person newPerson = new Person();
+//            newPerson.setMoney(MathUtils.round(FakeGenerator.getInstance().randomBetween(10000, 100000), 2));
+            crud.edit(newPerson, Crud.EditMode.NEW_ITEM);
         });
         button.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 

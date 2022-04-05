@@ -7,8 +7,10 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter
-@AllArgsConstructor @NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +27,7 @@ public class Person {
 
     @PrePersist
     private void setMoneyBeforePersist() {
-        money = MathUtils.round(FakeGenerator.getInstance().randomBetween(10000, 100000), 2);
+        if (money == 0)
+            money = MathUtils.round(FakeGenerator.getInstance().randomBetween(10000, 100000), 2);
     }
 }
