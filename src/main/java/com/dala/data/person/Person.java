@@ -1,11 +1,10 @@
 package com.dala.data.person;
 
+import com.dala.data.generator.FakeGenerator;
+import com.dala.utils.MathUtils;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter @Setter
@@ -17,4 +16,15 @@ public class Person {
     private String firstName;
     private String lastName;
     private double money;
+
+    public Person(String firstName, String lastName, double money) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.money = money;
+    }
+
+    @PrePersist
+    private void setMoneyBeforePersist() {
+        money = MathUtils.round(FakeGenerator.getInstance().randomBetween(10000, 100000), 2);
+    }
 }
