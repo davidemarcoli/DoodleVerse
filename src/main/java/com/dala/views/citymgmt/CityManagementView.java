@@ -15,10 +15,12 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+import javax.annotation.security.PermitAll;
+
 @PageTitle("Manage City")
 @Route(value = "citymgmt", layout = MainLayout.class)
 @RouteAlias(value = "citymgmt", layout = MainLayout.class)
-@AnonymousAllowed
+@PermitAll
 public class CityManagementView extends VerticalLayout {
 
     public CityManagementView() {

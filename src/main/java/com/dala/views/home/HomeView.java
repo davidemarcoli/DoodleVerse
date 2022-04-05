@@ -11,11 +11,13 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 
 @PageTitle("Home")
 @Route(value = "", layout = MainLayout.class)
-@RolesAllowed("ROLE_ADMIN")
+@PermitAll
 public class HomeView extends VerticalLayout {
 
     public HomeView() {

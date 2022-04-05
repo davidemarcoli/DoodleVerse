@@ -6,19 +6,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.Set;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Data
 @Table(name = "application_user")
 public class User extends AbstractEntity {
 
+    @Column(unique = true)
     private String username;
     private String name;
     @JsonIgnore
