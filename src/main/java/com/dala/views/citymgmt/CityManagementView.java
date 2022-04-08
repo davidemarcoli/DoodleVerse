@@ -1,6 +1,7 @@
 package com.dala.views.citymgmt;
 
 import com.dala.views.MainLayout;
+import com.dala.views.statistics.StatisticsView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -37,6 +38,9 @@ public class CityManagementView extends VerticalLayout {
 
         Button manageCityStatsBtn = new Button("View Stats");
         manageCityStatsBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_LARGE);
+        manageCityStatsBtn.addClickListener(e -> {
+            UI.getCurrent().navigate(StatisticsView.class);
+        });
 
         Button buildHouseBtn = new Button("Build House");
         buildHouseBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_LARGE);
