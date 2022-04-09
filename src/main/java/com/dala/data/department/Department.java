@@ -1,13 +1,24 @@
 package com.dala.data.department;
 
 import com.dala.data.person.Person;
-import lombok.Data;
+import lombok.*;
 
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
-@Data
+@Entity
+@Setter @Getter
+@AllArgsConstructor @NoArgsConstructor
 public class Department {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String departmentName;
-    private ArrayList<Person> workers;
-    private ArrayList<Department> childDepartments;
+
+    @OneToMany
+    private List<Person> workers;
+    @OneToMany
+    private List<Department> childDepartments;
 }

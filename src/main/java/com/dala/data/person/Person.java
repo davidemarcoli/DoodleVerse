@@ -1,5 +1,6 @@
 package com.dala.data.person;
 
+import com.dala.data.building.house.House;
 import com.dala.data.generator.FakeGenerator;
 import com.dala.utils.MathUtils;
 import lombok.*;
@@ -18,6 +19,9 @@ public class Person {
     private String firstName;
     private String lastName;
     private double money;
+
+    @ManyToOne
+    private House house;
 
     public Person(String firstName, String lastName, double money) {
         this.firstName = firstName;
