@@ -1,6 +1,7 @@
 package com.dala.views.citymgmt;
 
 import com.dala.views.MainLayout;
+import com.dala.views.buildhouse.BuildHouseView;
 import com.dala.views.statistics.StatisticsView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -28,7 +29,7 @@ public class CityManagementView extends VerticalLayout {
 
         add(new H1("Manage City"));
 
-        HorizontalLayout verticalLayout = new HorizontalLayout();
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
 
         Button manageCompaniesBtn = new Button("Manage Companies");
         manageCompaniesBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_LARGE);
@@ -44,12 +45,15 @@ public class CityManagementView extends VerticalLayout {
 
         Button buildHouseBtn = new Button("Build House");
         buildHouseBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_LARGE);
+        buildHouseBtn.addClickListener(e -> {
+            UI.getCurrent().navigate(BuildHouseView.class);
+        });
 
-        verticalLayout.add(manageCompaniesBtn);
-        verticalLayout.add(manageCityStatsBtn);
-        verticalLayout.add(buildHouseBtn);
+        horizontalLayout.add(manageCompaniesBtn);
+        horizontalLayout.add(manageCityStatsBtn);
+        horizontalLayout.add(buildHouseBtn);
 
-        add(verticalLayout);
+        add(horizontalLayout);
 
         setSizeFull();
         setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
