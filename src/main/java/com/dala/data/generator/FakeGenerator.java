@@ -19,7 +19,7 @@ public class FakeGenerator {
         ArrayList<Person> persons = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            persons.add(new Person(faker.name().firstName(), faker.name().lastName(), MathUtils.round(randomBetween(1000.0, 10000.0), 2)));
+            persons.add(new Person(faker.name().firstName(), faker.name().lastName(), MathUtils.getInstance().round(randomBetween(1000.0, 10000.0), 2)));
         }
 
         return persons;

@@ -12,6 +12,7 @@ import com.dala.data.person.PersonRepository;
 import com.dala.security.Role;
 import com.dala.data.user.User;
 import com.dala.data.user.UserRepository;
+import com.dala.utils.HouseImageUtils;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 
 import java.awt.*;
@@ -106,7 +107,7 @@ public class DataGenerator {
                 personRepository.saveAll(FakeGenerator.getInstance().generateRandomPersons(10));
             }
 
-            generateHouseImages();
+//            HouseImageUtils.houseImageUtilsBean().generateHouseImages();
 
             log.info("Generated data");
 
@@ -132,52 +133,6 @@ public class DataGenerator {
     public void saveWallIfNotExists(String type) {
         if (wallRepository.getWallByType(type).isEmpty()) {
             wallRepository.save(new Wall(0L, type));
-        }
-    }
-
-    @SneakyThrows
-    public void generateHouseImages() {
-        File directory = new File("/tmp/Doodleverse/images/");
-        directory.mkdirs();
-        File image;
-        BufferedImage bufferedImage;
-
-        /*
-        Color your_color = new Color(128,128,128);
-        String hex = "#"+Integer.toHexString(your_color.getRGB()).substring(2);
-         */
-
-        for (House house : houseRepository.findAll()) {
-
-            image = new File("/tmp/Doodleverse/images/house_" + house.getCeiling().getType().toLowerCase() + "_" +
-                    house.getSize().getType().toLowerCase().replaceAll(" ", "") + "_" + house.getWall().getType().toLowerCase() + "jpg");
-            bufferedImage = new BufferedImage(1000, 1000, Image.SCALE_SMOOTH);
-
-            if (image.exists()) continue;
-
-            Graphics2D graphics2D = bufferedImage.createGraphics();
-
-            graphics2D.setPaint(new Color(255, 255, 255));
-            graphics2D.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
-
-
-            Color ceilingColor = getColorByName(house.getCeiling().getType());
-            graphics2D.setPaint(ceilingColor);
-            Shape ceiling = new Polygon(new int[]{500, 200, 800}, new int[]{100, 200, 200}, 3);
-            graphics2D.fill(ceiling);
-
-            ImageIO.write(bufferedImage, "jpg", image);
-
-        }
-
-    }
-
-    private Color getColorByName(String name) {
-        try {
-            return (Color)Color.class.getField(name.toUpperCase()).get(null);
-        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-            e.printStackTrace();
-            return null;
         }
     }
 
