@@ -66,8 +66,7 @@ public class HouseImageUtils {
         File image;
         BufferedImage bufferedImage;
 
-        image = new File("/tmp/Doodleverse/images/house_" + house.getCeiling().getType().toLowerCase() + "_" +
-                house.getSize().getType().toLowerCase().replaceAll(" ", "") + "_" + house.getWall().getType().toLowerCase() + ".jpg");
+        image = new File("/tmp/Doodleverse/images/" + getFileName(house));
 
         if (image.exists()) return image.getAbsolutePath();
 
@@ -90,13 +89,13 @@ public class HouseImageUtils {
 
         Color ceilingColor = getColorByName(house.getCeiling().getType());
         graphics2D.setPaint(ceilingColor);
-        Shape ceiling = new Polygon(new int[]{width/2, width/100*15, width/100*85}, new int[]{height/10, height/10*3, height/10*3}, 3);
+        Shape ceiling = new Polygon(new int[]{width / 2, width / 100 * 15, width / 100 * 85}, new int[]{height / 10, height / 10 * 3, height / 10 * 3}, 3);
         graphics2D.fill(ceiling);
 
         InputStream textureIs = this.getClass().getClassLoader().getResourceAsStream("META-INF/resources/images/" + house.getWall().getType().toLowerCase() + ".jpg");
         assert textureIs != null;
         BufferedImage texture = ImageIO.read(textureIs);
-        graphics2D.drawImage(texture, width/5, height/10*3, width/5*4, height/5*4, 0, 0, 1000, 1000, null);
+        graphics2D.drawImage(texture, width / 5, height / 10 * 3, width / 5 * 4, height / 5 * 4, 0, 0, 1000, 1000, null);
         ImageIO.write(bufferedImage, "jpg", image);
 
 
@@ -130,9 +129,16 @@ public class HouseImageUtils {
         }
     }
 
+    public String getFileName(House house) {
+        return "house_" + house.getCeiling().getType().toLowerCase() + "_" +
+                house.getSize().getType().toLowerCase().replaceAll(" ", "") + "_" +
+                house.getWall().getType().toLowerCase() + ".jpg";
+    }
+
     private static HouseImageUtils instance;
 
-    private HouseImageUtils() {}
+    private HouseImageUtils() {
+    }
 
     @Bean
     public static HouseImageUtils getInstance() {
