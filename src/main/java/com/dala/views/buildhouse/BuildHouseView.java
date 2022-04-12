@@ -8,11 +8,13 @@ import com.dala.data.building.size.Size;
 import com.dala.data.building.size.SizeRepository;
 import com.dala.data.building.wall.Wall;
 import com.dala.data.building.wall.WallRepository;
+import com.dala.utils.HouseImageUtils;
 import com.dala.views.MainLayout;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -20,14 +22,20 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.AbstractStreamResource;
+import com.vaadin.flow.server.InputStreamFactory;
+import com.vaadin.flow.server.StreamResource;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
+import javax.imageio.ImageIO;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -41,13 +49,17 @@ public class BuildHouseView extends VerticalLayout {
     private final CeilingRepository ceilingRepository;
     private final SizeRepository sizeRepository;
     private final WallRepository wallRepository;
+    HouseImageUtils houseImageUtils = HouseImageUtils.getInstance();
 
     Select<String> sizeSelect = new Select<>();
     Select<String> wallSelect = new Select<>();
     Select<String> ceilingSelect = new Select<>();
 
     Text selectedStuff = new Text("");
+    Image houseImage = new Image();
     Text price = new Text("0$");
+
+    House currentHouse = new House();
 
 
     public void setupPage() {
@@ -64,6 +76,9 @@ public class BuildHouseView extends VerticalLayout {
         add(createButtonLayout);
 
         add(selectedStuff);
+
+        houseImage.setAlt("The Selected House!");
+        add(houseImage);
 //        add(price);
 
         HorizontalLayout dropdownLayout = new HorizontalLayout();
@@ -99,18 +114,23 @@ public class BuildHouseView extends VerticalLayout {
         });
 
         ceilingSelect.addValueChangeListener(selectStringComponentValueChangeEvent -> {
-            setInfoText();
+            updateInfos();
+            setImageSource();
         });
 
         sizeSelect.addValueChangeListener(selectStringComponentValueChangeEvent -> {
-            setInfoText();
+            updateInfos();
+            setImageSource();
         });
 
         wallSelect.addValueChangeListener(selectStringComponentValueChangeEvent -> {
-            setInfoText();
+            updateInfos();
+            setImageSource();
         });
 
-        setInfoText();
+        updateInfos();
+        setImageSource();
+
 
         setSizeFull();
         setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
@@ -119,14 +139,9 @@ public class BuildHouseView extends VerticalLayout {
     }
 
     private void saveHouse() {
+        currentHouse = houseRepository.save(currentHouse);
 
-        House house = new House();
-        house.setCeiling(ceilingRepository.getCeilingByType(ceilingSelect.getValue()).orElse(null));
-        house.setSize(sizeRepository.getSizeByType(sizeSelect.getValue()).orElse(null));
-        house.setWall(wallRepository.getWallByType(wallSelect.getValue()).orElse(null));
-        house = houseRepository.save(house);
-
-        if (houseRepository.findById(house.getId()).isPresent()) {
+        if (houseRepository.findById(currentHouse.getId()).isPresent()) {
             Notification notification = Notification.show("House Built!");
             notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             notification.setPosition(Notification.Position.BOTTOM_CENTER);
@@ -137,10 +152,40 @@ public class BuildHouseView extends VerticalLayout {
         }
     }
 
-    private void setInfoText() {
+    private void setImageSource() {
+        String source = houseImageUtils.generateImageByHouse(currentHouse);
+        StreamResource resource = new StreamResource(Arrays.stream(source.split("/")).reduce((first, second) -> second).orElse("image.jpg"), () -> {
+            try {
+                return new FileInputStream(source);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            return null;
+        });
+
+        int width = 1000;
+
+        switch (currentHouse.getSize().getType().toLowerCase()) {
+            case "small" -> width = 800;
+            case "wide" -> width = 1000;
+            case "extra wide" -> width = 1400;
+        }
+
+        System.out.println(source);
+        houseImage.setWidth(width/2f, Unit.PIXELS);
+        houseImage.setHeight(500, Unit.PIXELS);
+        houseImage.setSrc(resource);
+//        houseImage.setSizeFull();
+    }
+
+    private void updateInfos() {
         selectedStuff.setText("Ceiling: " + ceilingSelect.getValue() + "   " +
                 "Size: " + sizeSelect.getValue() + "   " +
                 "Wall: " + wallSelect.getValue());
+
+        currentHouse.setCeiling(ceilingRepository.getCeilingByType(ceilingSelect.getValue()).orElse(null));
+        currentHouse.setSize(sizeRepository.getSizeByType(sizeSelect.getValue()).orElse(null));
+        currentHouse.setWall(wallRepository.getWallByType(wallSelect.getValue()).orElse(null));
     }
 
     @Autowired

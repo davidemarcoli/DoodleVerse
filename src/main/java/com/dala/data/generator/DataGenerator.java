@@ -12,16 +12,23 @@ import com.dala.data.person.PersonRepository;
 import com.dala.security.Role;
 import com.dala.data.user.User;
 import com.dala.data.user.UserRepository;
+import com.dala.utils.HouseImageUtils;
 import com.vaadin.flow.spring.annotation.SpringComponent;
-import java.util.Collections;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.Collections;
+import java.util.Objects;
+
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.imageio.ImageIO;
 
 @SpringComponent
 @Log4j2
@@ -78,9 +85,9 @@ public class DataGenerator {
             saveCeilingIfNotExists("Yellow");
             saveCeilingIfNotExists("Blue");
 
-            saveSizeIfNotExists("Small");
-            saveSizeIfNotExists("Wide");
-            saveSizeIfNotExists("Extra Wide");
+            saveSizeIfNotExists("Small", 800);
+            saveSizeIfNotExists("Wide", 1000);
+            saveSizeIfNotExists("Extra Wide", 1400);
 
             saveWallIfNotExists("Wood");
             saveWallIfNotExists("Stone");
@@ -88,7 +95,8 @@ public class DataGenerator {
 
             if (houseRepository.count() < 1) {
                 House house = new House();
-                house.setCeiling(ceilingRepository.getCeilingByType("Blue").orElse(null));
+                house.setCeiling(ceilingRepository.getCeilingByType("blue").orElse(null));
+//                house.setCeiling_color(Integer.toHexString(Objects.requireNonNull(getColorByName("blue")).getRGB()).substring(2));
                 house.setSize(sizeRepository.getSizeByType("Extra Wide").orElse(null));
                 house.setWall(wallRepository.getWallByType("Wood").orElse(null));
                 houseRepository.save(house);
@@ -98,6 +106,8 @@ public class DataGenerator {
             if (personRepository.count() < 10) {
                 personRepository.saveAll(FakeGenerator.getInstance().generateRandomPersons(10));
             }
+
+//            HouseImageUtils.houseImageUtilsBean().generateHouseImages();
 
             log.info("Generated data");
 
@@ -114,9 +124,9 @@ public class DataGenerator {
         }
     }
 
-    public void saveSizeIfNotExists(String type) {
+    public void saveSizeIfNotExists(String type, int width) {
         if (sizeRepository.getSizeByType(type).isEmpty()) {
-            sizeRepository.save(new Size(0L, type));
+            sizeRepository.save(new Size(0L, type, width));
         }
     }
 

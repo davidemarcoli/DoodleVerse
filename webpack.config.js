@@ -5,9 +5,12 @@
 const merge = require('webpack-merge');
 const flowDefaults = require('./webpack.generated.js');
 
-module.exports = merge(flowDefaults, {
+mergedConfig = merge(flowDefaults, {
 
 });
+// // hack for color picker
+// mergedConfig.resolve.alias['@vaadin/vaadin-button/theme/lumo/vaadin-button-styles.js'] = '@vaadin/button/theme/lumo/vaadin-button-styles.js';
+// module.exports = mergedConfig;
 
 /**
  * This file can be used to configure the flow plugin defaults.
