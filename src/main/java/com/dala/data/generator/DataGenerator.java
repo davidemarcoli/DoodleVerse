@@ -85,9 +85,9 @@ public class DataGenerator {
             saveCeilingIfNotExists("Yellow");
             saveCeilingIfNotExists("Blue");
 
-            saveSizeIfNotExists("Small");
-            saveSizeIfNotExists("Wide");
-            saveSizeIfNotExists("Extra Wide");
+            saveSizeIfNotExists("Small", 800);
+            saveSizeIfNotExists("Wide", 1000);
+            saveSizeIfNotExists("Extra Wide", 1400);
 
             saveWallIfNotExists("Wood");
             saveWallIfNotExists("Stone");
@@ -124,9 +124,9 @@ public class DataGenerator {
         }
     }
 
-    public void saveSizeIfNotExists(String type) {
+    public void saveSizeIfNotExists(String type, int width) {
         if (sizeRepository.getSizeByType(type).isEmpty()) {
-            sizeRepository.save(new Size(0L, type));
+            sizeRepository.save(new Size(0L, type, width));
         }
     }
 

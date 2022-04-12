@@ -73,11 +73,8 @@ public class HouseImageUtils {
         int width = 1000;
         int height = 1000;
 
-        switch (house.getSize().getType().toLowerCase()) {
-            case "small" -> width = 800;
-            case "wide" -> width = 1000;
-            case "extra wide" -> width = 1400;
-            default -> System.out.println("SPECIAL SIZE CASE: " + house.getSize().getType().toLowerCase());
+        if (house.getSize().getWidth() != 0) {
+            width = house.getSize().getWidth();
         }
 
         bufferedImage = new BufferedImage(width, height, Image.SCALE_SMOOTH);
