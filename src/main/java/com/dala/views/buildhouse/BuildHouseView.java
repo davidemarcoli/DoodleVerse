@@ -163,15 +163,7 @@ public class BuildHouseView extends VerticalLayout {
             return null;
         });
 
-        int width = 1000;
-
-        switch (currentHouse.getSize().getType().toLowerCase()) {
-            case "small" -> width = 800;
-            case "wide" -> width = 1000;
-            case "extra wide" -> width = 1400;
-        }
-
-        System.out.println(source);
+        int width = currentHouse.getSize().getWidth();
         houseImage.setWidth(width/2f, Unit.PIXELS);
         houseImage.setHeight(500, Unit.PIXELS);
         houseImage.setSrc(resource);
