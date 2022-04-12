@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Setter @Getter
-@AllArgsConstructor @NoArgsConstructor
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Company {
     @Id
     @GeneratedValue
