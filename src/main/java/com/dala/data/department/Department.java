@@ -10,6 +10,7 @@ import java.util.List;
 @Entity
 @Setter @Getter
 @AllArgsConstructor @NoArgsConstructor
+@ToString
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +18,9 @@ public class Department {
 
     private String departmentName;
 
-    @OneToMany
+    @ManyToMany
     private List<Person> workers;
+
     @OneToMany
     private List<Department> childDepartments;
 }
