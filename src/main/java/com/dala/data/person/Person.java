@@ -32,6 +32,6 @@ public class Person {
     @PrePersist
     private void setMoneyBeforePersist() {
         if (money == 0)
-            money = MathUtils.round(FakeGenerator.getInstance().randomBetween(10000, 100000), 2);
+            money = MathUtils.getInstance().round(FakeGenerator.getInstance().randomBetween(10000, 100000), 2);
     }
 }
