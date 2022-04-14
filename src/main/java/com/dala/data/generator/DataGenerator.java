@@ -8,6 +8,7 @@ import com.dala.data.building.size.Size;
 import com.dala.data.building.size.SizeRepository;
 import com.dala.data.building.wall.Wall;
 import com.dala.data.building.wall.WallRepository;
+import com.dala.data.company.CompanyRepository;
 import com.dala.data.person.PersonRepository;
 import com.dala.security.Role;
 import com.dala.data.user.User;
@@ -51,6 +52,9 @@ public class DataGenerator {
 
     @Autowired
     private HouseRepository houseRepository;
+
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @Bean
     public CommandLineRunner loadData(PasswordEncoder passwordEncoder, UserRepository userRepository) {
@@ -104,7 +108,11 @@ public class DataGenerator {
 
 
             if (personRepository.count() < 10) {
-                personRepository.saveAll(FakeGenerator.getInstance().generateRandomPersons(10));
+                personRepository.saveAllAndFlush(FakeGenerator.getInstance().generateRandomPersons(10));
+            }
+
+            if (companyRepository.count() < 5) {
+                companyRepository.saveAllAndFlush(FakeGenerator.getInstance().generateCompanies(5));
             }
 
 //            HouseImageUtils.houseImageUtilsBean().generateHouseImages();
