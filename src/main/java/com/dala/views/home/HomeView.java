@@ -1,6 +1,7 @@
 package com.dala.views.home;
 
 import com.dala.views.MainLayout;
+import com.dala.views.cityoverview.CityOverviewView;
 import com.dala.views.play.PlayView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -39,6 +40,10 @@ public class HomeView extends VerticalLayout {
 
         Button secondaryButton = new Button("City Overview");
         secondaryButton.addThemeVariants(ButtonVariant.LUMO_CONTRAST, ButtonVariant.LUMO_LARGE);
+        secondaryButton.addClickListener(e -> {
+            UI.getCurrent().navigate(CityOverviewView.class);
+        });
+
         horizontalLayout.add(primaryButton);
         horizontalLayout.add(secondaryButton);
 
