@@ -11,6 +11,7 @@ import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.crud.Crud;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
@@ -27,7 +28,7 @@ import java.util.List;
 @PageTitle("City Overview")
 @Route(value = "overview", layout = MainLayout.class)
 @PermitAll
-public class CityOverviewView extends HorizontalLayout {
+public class CityOverviewView extends VerticalLayout {
     private final HouseRepository houseRepository;
 
     HouseImageUtils houseImageUtils = HouseImageUtils.getInstance();
