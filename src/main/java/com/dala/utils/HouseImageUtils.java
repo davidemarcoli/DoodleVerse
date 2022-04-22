@@ -84,7 +84,7 @@ public class HouseImageUtils {
         graphics2D.fillRect(0, 0, width, height);
 
 
-        Color ceilingColor = new Color(house.getCeiling().getColor());
+        Color ceilingColor = Color.decode("#" + house.getCeilingColor());
         graphics2D.setPaint(ceilingColor);
         Shape ceiling = new Polygon(new int[]{width / 2, width / 100 * 15, width / 100 * 85}, new int[]{height / 10, height / 10 * 3, height / 10 * 3}, 3);
         graphics2D.fill(ceiling);
@@ -158,7 +158,7 @@ public class HouseImageUtils {
     }
 
     public String getFileName(House house) {
-        return "house_" + house.getCeiling().getColor() + "_" +
+        return "house_" + house.getCeilingColor() + "_" +
                 house.getSize().getType().toLowerCase().replaceAll(" ", "") + "_" +
                 house.getWall().getType().toLowerCase() + ".jpg";
     }

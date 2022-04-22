@@ -14,7 +14,9 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -24,6 +26,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.StreamResource;
@@ -34,6 +37,8 @@ import javax.annotation.security.PermitAll;
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -41,21 +46,22 @@ import java.util.Arrays;
 @Route(value = "build", layout = MainLayout.class)
 @PermitAll
 @Log4j2
-public class BuildHouseView extends VerticalLayout {
+public class BuildHouseView extends VerticalLayout implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 9142204424500605320L;
 
     private final HouseRepository houseRepository;
-    private final CeilingRepository ceilingRepository;
+//    private final CeilingRepository ceilingRepository;
     private final SizeRepository sizeRepository;
     private final WallRepository wallRepository;
     HouseImageUtils houseImageUtils = HouseImageUtils.getInstance();
 
     Select<String> sizeSelect = new Select<>();
     Select<String> wallSelect = new Select<>();
-    Select<String> ceilingSelect = new Select<>();
 
     TextField colorField = new TextField();
 
-    Text selectedStuff = new Text("");
+//    Text selectedStuff = new Text("");
     Image houseImage = new Image();
     Text price = new Text("0$");
 
@@ -75,7 +81,7 @@ public class BuildHouseView extends VerticalLayout {
         createButtonLayout.add(createButton);
         add(createButtonLayout);
 
-        add(selectedStuff);
+//        add(selectedStuff);
 
         houseImage.setAlt("The Selected House!");
         add(houseImage);
@@ -99,16 +105,25 @@ public class BuildHouseView extends VerticalLayout {
         wallSelect.setValue(wallNames.get(0));
         dropdownLayout.add(wallSelect);
 
-//        ceilingSelect.setLabel("Ceiling");
-//        Ceiling[] ceilings = ceilingRepository.findAll().toArray(new Ceiling[0]);
-//        ArrayList<String> ceilingNames = new ArrayList<>();
-//        Arrays.stream(ceilings).forEach(ceiling -> ceilingNames.add(ceiling.getType()));
-//        ceilingSelect.setItems(ceilingNames);
-//        ceilingSelect.setValue(ceilingNames.get(0));
-//        dropdownLayout.add(ceilingSelect);
 
         colorField.setLabel("Ceiling Color");
         colorField.setRequired(true);
+//        Div div = new Div();
+//        Span colorText = new Span();
+//        colorText.getStyle().set("color", "blue");
+//        colorText.setText("blue");
+//        div.add(new Text("Example: "), colorText, new Text(" or "));
+//        colorText.setText("0000ff");
+//        div.add(colorText, new Text(" or "));
+//        colorText.setText("00f");
+//        div.add(colorText, new Text(" or "));
+//        colorText.setText("0, 0, 255");
+//        div.add(colorText);
+        String helperText = "Example: blue<br>or 0000ff or 00f<br>or 0, 0, 255";
+        Div helperDiv = new Div();
+        helperDiv.getElement().setProperty("innerHTML", helperText);
+        helperDiv.getStyle().set("text-align", "left");
+        colorField.setHelperComponent(helperDiv);
         dropdownLayout.add(colorField);
 
 
@@ -117,11 +132,6 @@ public class BuildHouseView extends VerticalLayout {
         createButton.addClickListener(buttonClickEvent -> {
             saveHouse();
         });
-
-//        ceilingSelect.addValueChangeListener(selectStringComponentValueChangeEvent -> {
-//            updateInfos();
-//            setImageSource();
-//        });
 
         colorField.addValueChangeListener(event -> {
             updateInfos();
@@ -181,32 +191,24 @@ public class BuildHouseView extends VerticalLayout {
     }
 
     private void updateInfos() {
-        selectedStuff.setText("Ceiling: " + ceilingSelect.getValue() + "   " +
-                "Size: " + sizeSelect.getValue() + "   " +
-                "Wall: " + wallSelect.getValue());
-
-//        currentHouse.setCeiling(ceilingRepository.getCeilingByColor(ceilingSelect.getValue()).orElse(null));
-
         Color inputColor = houseImageUtils.getColor(colorField.getValue());
 
         if (inputColor == null)
             inputColor = Color.black;
 
-        Ceiling ceiling = ceilingRepository.getCeilingByColor(inputColor.getRGB()).orElse(null);
-        if (ceiling == null) {
-            ceiling = new Ceiling(0L, inputColor.getRGB());
-            ceiling = ceilingRepository.save(ceiling);
-        }
-
-        currentHouse.setCeiling(ceiling);
+        currentHouse.setCeilingColor(Integer.toHexString(inputColor.getRGB()).substring(2));
         currentHouse.setSize(sizeRepository.getSizeByType(sizeSelect.getValue()).orElse(null));
         currentHouse.setWall(wallRepository.getWallByType(wallSelect.getValue()).orElse(null));
+
+//        selectedStuff.setText("Ceiling: " + "#" + currentHouse.getCeilingColor() + "\n" +
+//                "Size: " + currentHouse.getSize().getType() + "\n" +
+//                "Wall: " + currentHouse.getWall().getType());
     }
 
     @Autowired
-    public BuildHouseView(HouseRepository houseRepository, CeilingRepository ceilingRepository, SizeRepository sizeRepository, WallRepository wallRepository) {
+    public BuildHouseView(HouseRepository houseRepository/*, CeilingRepository ceilingRepository*/, SizeRepository sizeRepository, WallRepository wallRepository) {
         this.houseRepository = houseRepository;
-        this.ceilingRepository = ceilingRepository;
+//        this.ceilingRepository = ceilingRepository;
         this.sizeRepository = sizeRepository;
         this.wallRepository = wallRepository;
 

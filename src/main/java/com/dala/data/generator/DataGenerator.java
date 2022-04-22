@@ -90,11 +90,9 @@ public class DataGenerator {
             saveWallIfNotExists("Stone");
             saveWallIfNotExists("Brick");
 
-            System.out.println("Blue: " + Color.blue.getRGB());
-
             if (houseRepository.count() < 1) {
                 House house = new House();
-                house.setCeiling(ceilingRepository.getCeilingByColor(Color.blue.getRGB()).orElse(null));
+                house.setCeilingColor(Integer.toHexString(Color.blue.getRGB()).substring(2));
 //                house.setCeiling_color(Integer.toHexString(Objects.requireNonNull(getColorByName("blue")).getRGB()).substring(2));
                 house.setSize(sizeRepository.getSizeByType("Extra Wide").orElse(null));
                 house.setWall(wallRepository.getWallByType("Wood").orElse(null));
