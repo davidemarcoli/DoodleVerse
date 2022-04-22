@@ -84,7 +84,7 @@ public class HouseImageUtils {
         graphics2D.fillRect(0, 0, width, height);
 
 
-        Color ceilingColor = getColorByName(house.getCeiling().getType());
+        Color ceilingColor = Color.decode("#" + house.getCeilingColor());
         graphics2D.setPaint(ceilingColor);
         Shape ceiling = new Polygon(new int[]{width / 2, width / 100 * 15, width / 100 * 85}, new int[]{height / 10, height / 10 * 3, height / 10 * 3}, 3);
         graphics2D.fill(ceiling);
@@ -117,17 +117,48 @@ public class HouseImageUtils {
         return image.getAbsolutePath();
     }
 
-    private Color getColorByName(String name) {
+    public Color getColor(String color) {
+
         try {
-            return (Color) Color.class.getField(name.toUpperCase()).get(null);
-        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-            e.printStackTrace();
-            return null;
+            String[] colorSplit = color.replaceAll(" ", "").split(",");
+            return new Color(Integer.parseInt(colorSplit[0]), Integer.parseInt(colorSplit[1]), Integer.parseInt(colorSplit[2]));
+        } catch (Exception ignore) {
         }
+
+        try {
+            System.out.println(Integer.toHexString(Integer.parseInt(color)));
+        } catch (NumberFormatException ignore) {
+        }
+
+        try {
+            return (Color) Color.class.getField(color.toUpperCase()).get(null);
+        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException ignore) {
+        }
+
+        if (color.length() == 3) {
+            StringBuilder extendedHex = new StringBuilder();
+
+            for (Character c : color.toCharArray()) {
+                extendedHex.append(c).append(c);
+            }
+
+            color = extendedHex.toString();
+        }
+        if (!color.startsWith("#"))
+            color = "#" + color;
+
+
+        try {
+            return Color.decode(color);
+        } catch (Exception ignore) {
+        }
+
+
+        return null;
     }
 
     public String getFileName(House house) {
-        return "house_" + house.getCeiling().getType().toLowerCase() + "_" +
+        return "house_" + house.getCeilingColor() + "_" +
                 house.getSize().getType().toLowerCase().replaceAll(" ", "") + "_" +
                 house.getWall().getType().toLowerCase() + ".jpg";
     }

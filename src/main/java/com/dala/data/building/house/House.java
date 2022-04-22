@@ -20,8 +20,10 @@ public class House extends Building {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Ceiling ceiling;
+//    @ManyToOne
+//    private Ceiling ceiling;
+
+    private String ceilingColor;
 
     @ManyToOne
     private Size size;
