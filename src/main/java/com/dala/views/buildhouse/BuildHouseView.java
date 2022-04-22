@@ -23,17 +23,15 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.AbstractStreamResource;
-import com.vaadin.flow.server.InputStreamFactory;
 import com.vaadin.flow.server.StreamResource;
-import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
-import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -54,6 +52,8 @@ public class BuildHouseView extends VerticalLayout {
     Select<String> sizeSelect = new Select<>();
     Select<String> wallSelect = new Select<>();
     Select<String> ceilingSelect = new Select<>();
+
+    TextField colorField = new TextField();
 
     Text selectedStuff = new Text("");
     Image houseImage = new Image();
@@ -99,13 +99,18 @@ public class BuildHouseView extends VerticalLayout {
         wallSelect.setValue(wallNames.get(0));
         dropdownLayout.add(wallSelect);
 
-        ceilingSelect.setLabel("Ceiling");
-        Ceiling[] ceilings = ceilingRepository.findAll().toArray(new Ceiling[0]);
-        ArrayList<String> ceilingNames = new ArrayList<>();
-        Arrays.stream(ceilings).forEach(ceiling -> ceilingNames.add(ceiling.getType()));
-        ceilingSelect.setItems(ceilingNames);
-        ceilingSelect.setValue(ceilingNames.get(0));
-        dropdownLayout.add(ceilingSelect);
+//        ceilingSelect.setLabel("Ceiling");
+//        Ceiling[] ceilings = ceilingRepository.findAll().toArray(new Ceiling[0]);
+//        ArrayList<String> ceilingNames = new ArrayList<>();
+//        Arrays.stream(ceilings).forEach(ceiling -> ceilingNames.add(ceiling.getType()));
+//        ceilingSelect.setItems(ceilingNames);
+//        ceilingSelect.setValue(ceilingNames.get(0));
+//        dropdownLayout.add(ceilingSelect);
+
+        colorField.setLabel("Ceiling Color");
+        colorField.setRequired(true);
+        dropdownLayout.add(colorField);
+
 
         add(dropdownLayout);
 
@@ -113,7 +118,12 @@ public class BuildHouseView extends VerticalLayout {
             saveHouse();
         });
 
-        ceilingSelect.addValueChangeListener(selectStringComponentValueChangeEvent -> {
+//        ceilingSelect.addValueChangeListener(selectStringComponentValueChangeEvent -> {
+//            updateInfos();
+//            setImageSource();
+//        });
+
+        colorField.addValueChangeListener(event -> {
             updateInfos();
             setImageSource();
         });
@@ -164,7 +174,7 @@ public class BuildHouseView extends VerticalLayout {
         });
 
         int width = currentHouse.getSize().getWidth();
-        houseImage.setWidth(width/2f, Unit.PIXELS);
+        houseImage.setWidth(width / 2f, Unit.PIXELS);
         houseImage.setHeight(500, Unit.PIXELS);
         houseImage.setSrc(resource);
 //        houseImage.setSizeFull();
@@ -175,7 +185,20 @@ public class BuildHouseView extends VerticalLayout {
                 "Size: " + sizeSelect.getValue() + "   " +
                 "Wall: " + wallSelect.getValue());
 
-        currentHouse.setCeiling(ceilingRepository.getCeilingByType(ceilingSelect.getValue()).orElse(null));
+//        currentHouse.setCeiling(ceilingRepository.getCeilingByColor(ceilingSelect.getValue()).orElse(null));
+
+        Color inputColor = houseImageUtils.getColor(colorField.getValue());
+
+        if (inputColor == null)
+            inputColor = Color.black;
+
+        Ceiling ceiling = ceilingRepository.getCeilingByColor(inputColor.getRGB()).orElse(null);
+        if (ceiling == null) {
+            ceiling = new Ceiling(0L, inputColor.getRGB());
+            ceiling = ceilingRepository.save(ceiling);
+        }
+
+        currentHouse.setCeiling(ceiling);
         currentHouse.setSize(sizeRepository.getSizeByType(sizeSelect.getValue()).orElse(null));
         currentHouse.setWall(wallRepository.getWallByType(wallSelect.getValue()).orElse(null));
     }

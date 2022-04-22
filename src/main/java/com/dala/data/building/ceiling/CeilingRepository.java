@@ -7,5 +7,5 @@ import java.util.Optional;
 
 @Repository
 public interface CeilingRepository extends JpaRepository<Ceiling, Long> {
-    public Optional<Ceiling> getCeilingByType(String type);
+    Optional<Ceiling> getCeilingByColor(Integer color);
 }
