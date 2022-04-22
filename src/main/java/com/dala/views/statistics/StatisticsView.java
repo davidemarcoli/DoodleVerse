@@ -16,9 +16,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Objects;
 
 @PageTitle("Statistics")
 @Route(value = "statistics", layout = MainLayout.class)
@@ -74,6 +72,11 @@ public class StatisticsView extends VerticalLayout {
         add(moneyBoxplot);
     };
 
+    NodeSeries series = new NodeSeries();
+    Node nextNode;
+    Node currentNode;
+    Department currentDepartment;
+
     public void addOrgChart() {
         Chart orgChart = new Chart(ChartType.ORGANIZATION);
         Configuration conf = orgChart.getConfiguration();
@@ -92,109 +95,121 @@ public class StatisticsView extends VerticalLayout {
         plotOptions.addLevel(level0);
         conf.setPlotOptions(plotOptions);
 
-        NodeSeries series = new NodeSeries();
         series.setName("City");
-        ArrayList<ArrayList<Department>> preparedDepartments = new ArrayList<>();
+        ArrayList<Department> departments = new ArrayList<>(departmentRepository.findAll());
 
         ArrayList<Company> companies = new ArrayList<>(companyRepository.findAll());
 
-//        ArrayList<Node> level0Nodes = new ArrayList<>();
-//        for (Company company : companies) {
-//            level0Nodes.add(new Node(company.getCompanyName()));
-//        }
-//        preparedDepartments.add(level0Nodes);
-
-        ArrayList<Department> departments = new ArrayList<>(departmentRepository.findAll());
-
-        ArrayList<Department> nextLevelDepartments = new ArrayList<>();
-
-        for (Company company : companies) {
-            nextLevelDepartments.addAll(company.getDepartments());
-        }
-
-        preparedDepartments.add(nextLevelDepartments);
-        departments = nextLevelDepartments;
-
-        do {
-            for (Department department: departments) {
-                departments.addAll(department.getChildDepartments());
-            }
-
-            preparedDepartments.add(nextLevelDepartments);
-            departments = nextLevelDepartments;
-        } while (departments.size() > 1);
-
-        ArrayList<Department> currentLevel = new ArrayList<>();
-        ArrayList<Node> currentLevelNodes = new ArrayList<>();
-        ArrayList<Department> nextLevel = new ArrayList<>();
-        ArrayList<Node> nextLevelNodes = new ArrayList<>();
-
-        for (int nodeListIndex = 0; nodeListIndex <  preparedDepartments.size() - 1; nodeListIndex++) {
-//            try {
-//                nodes.get(nodeListIndex + 1);
-//            } catch (Exception e) {
+//        ArrayList<Department> currentLevel = new ArrayList<>();
+//        ArrayList<Node> currentLevelNodes = new ArrayList<>();
+//        ArrayList<Department> nextLevel = new ArrayList<>();
+//        ArrayList<Node> nextLevelNodes = new ArrayList<>();
 //
-//            }
-
-            currentLevel = preparedDepartments.get(nodeListIndex);
-            nextLevel = preparedDepartments.get(nodeListIndex + 1);
-
-            if (nodeListIndex == 0) {
-//                ArrayList<Department> finalCurrentLevel = new ArrayList<>();
-
-//                ArrayList<Node> finalCurrentLevelNodes1 = currentLevelNodes;
-//                ArrayList<Node> finalNextLevelNodes1 = nextLevelNodes;
-
-                for (Company company: companies) {
-                    Node companyNode = new Node(company.getCompanyName());
-
-                    for (Department department: company.getDepartments()) {
-                        currentLevelNodes.add(new Node(department.getDepartmentName()));
-//                        finalCurrentLevel.add(department);
-                        series.add(companyNode, currentLevelNodes.get(currentLevelNodes.size() - 1));
-                    }
-                }
-
-//                companies.forEach(company -> {
+//        for (int nodeListIndex = 0; nodeListIndex <  departments.size() - 1; nodeListIndex++) {
+////            try {
+////                nodes.get(nodeListIndex + 1);
+////            } catch (Exception e) {
+////
+////            }
+//
+//            currentLevel = preparedDepartments.get(nodeListIndex);
+//            nextLevel = preparedDepartments.get(nodeListIndex + 1);
+//
+//            if (nodeListIndex == 0) {
+////                ArrayList<Department> finalCurrentLevel = new ArrayList<>();
+//
+////                ArrayList<Node> finalCurrentLevelNodes1 = currentLevelNodes;
+////                ArrayList<Node> finalNextLevelNodes1 = nextLevelNodes;
+//
+//                for (Company company: companies) {
 //                    Node companyNode = new Node(company.getCompanyName());
 //
-//                    company.getDepartments().forEach(department -> {
-//                        finalCurrentLevelNodes1.add(new Node(department.getDepartmentName()));
+//                    for (Department department: company.getDepartments()) {
+//                        currentLevelNodes.add(new Node(department.getDepartmentName()));
 ////                        finalCurrentLevel.add(department);
-//                        series.add(companyNode, finalNextLevelNodes1.get(finalNextLevelNodes1.size() - 1));
-//                    });
-//                });
-
-            }
-
-//            ArrayList<Department> finalCurrentLevel = currentLevel;
-//            ArrayList<Node> finalNextLevelNodes = nextLevelNodes;
-//            ArrayList<Node> finalCurrentLevelNodes = currentLevelNodes;
-
-            for (Department department: currentLevel) {
-                for (Department childDepartment: department.getChildDepartments()) {
-                    Node departmentNode = currentLevelNodes.get(currentLevel.indexOf(childDepartment));
-
-                    nextLevelNodes.add(new Node(department.getDepartmentName()));
-                    series.add(departmentNode, nextLevelNodes.get(nextLevelNodes.size() - 1));
-                }
-            }
-
-//            currentLevel.forEach(department -> {
-//                department.getChildDepartments().forEach(childDepartment -> {
-//                    Node departmentNode = finalCurrentLevelNodes.get(finalCurrentLevel.indexOf(childDepartment));
+//                        series.add(companyNode, currentLevelNodes.get(currentLevelNodes.size() - 1));
+//                    }
+//                }
 //
-//                    finalNextLevelNodes.add(new Node(department.getDepartmentName()));
-//                    series.add(departmentNode, finalNextLevelNodes.get(finalNextLevelNodes.size() - 1));
-//                });
-//            });
+////                companies.forEach(company -> {
+////                    Node companyNode = new Node(company.getCompanyName());
+////
+////                    company.getDepartments().forEach(department -> {
+////                        finalCurrentLevelNodes1.add(new Node(department.getDepartmentName()));
+//////                        finalCurrentLevel.add(department);
+////                        series.add(companyNode, finalNextLevelNodes1.get(finalNextLevelNodes1.size() - 1));
+////                    });
+////                });
+//
+//            }
+//
+////            ArrayList<Department> finalCurrentLevel = currentLevel;
+////            ArrayList<Node> finalNextLevelNodes = nextLevelNodes;
+////            ArrayList<Node> finalCurrentLevelNodes = currentLevelNodes;
+//
+//            for (Department department: currentLevel) {
+//                for (Department childDepartment: department.getChildDepartments()) {
+//                    Node departmentNode = currentLevelNodes.get(currentLevel.indexOf(childDepartment));
+//
+//                    nextLevelNodes.add(new Node(department.getDepartmentName()));
+//                    series.add(departmentNode, nextLevelNodes.get(nextLevelNodes.size() - 1));
+//                }
+//            }
+//
+////            currentLevel.forEach(department -> {
+////                department.getChildDepartments().forEach(childDepartment -> {
+////                    Node departmentNode = finalCurrentLevelNodes.get(finalCurrentLevel.indexOf(childDepartment));
+////
+////                    finalNextLevelNodes.add(new Node(department.getDepartmentName()));
+////                    series.add(departmentNode, finalNextLevelNodes.get(finalNextLevelNodes.size() - 1));
+////                });
+////            });
+//
+//            currentLevelNodes = nextLevelNodes;
+//            nextLevelNodes = new ArrayList<>();
+//
+//        }
 
-            currentLevelNodes = nextLevelNodes;
-            nextLevelNodes = new ArrayList<>();
 
+        for (Company company: companies) {
+            currentNode = new Node(company.getCompanyName());
+            addDepartmentsToSeries(new ArrayList<>(company.getDepartments()));
+
+//            for (Department department: company.getDepartments()) {
+//                currentDepartmentNode = new Node(department.getDepartmentName());
+//                currentLevelNodes.add(currentDepartmentNode);
+//                series.add(companyNode, currentLevelNodes.get(currentLevelNodes.size() - 1));
+//
+//                nextDepartments = new ArrayList<>(department.getChildDepartments());
+//
+////                while (!nextDepartments.isEmpty()) {
+////                    ArrayList<Department> currentDepartments = (ArrayList<Department>) nextDepartments.clone();
+////                    nextDepartments.clear();
+////                    for (Department department1: currentDepartments) {
+////                        nextDepartmentNode = new Node(department1.getDepartmentName());
+////                        series.add(currentDepartmentNode, nextDepartmentNode);
+////                        nextDepartments.addAll(department1.getChildDepartments());
+////                    }
+////                }
+//            }
         }
+
+
 
         conf.addSeries(series);
         add(orgChart);
+    }
+
+
+    public void addDepartmentsToSeries(ArrayList<Department> nextDepartments) {
+        ArrayList<Department> currentDepartments = (ArrayList<Department>) nextDepartments.clone();
+        nextDepartments.clear();
+        for (Department department1: currentDepartments) {
+            nextNode = new Node(department1.getDepartmentName());
+            series.add(currentNode, nextNode);
+            addDepartmentsToSeries(new ArrayList<>(department1.getChildDepartments()));
+        }
+
+        currentNode = nextNode;
     }
 }

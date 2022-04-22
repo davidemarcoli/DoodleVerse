@@ -21,6 +21,6 @@ public class Department {
     @ManyToMany
     private List<Person> workers;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Department> childDepartments;
 }
