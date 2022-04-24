@@ -104,8 +104,8 @@ public class DataGenerator {
                 personRepository.saveAllAndFlush(FakeGenerator.getInstance().generateRandomPersons(10));
             }
 
-            if (companyRepository.count() < 5) {
-                companyRepository.saveAllAndFlush(FakeGenerator.getInstance().generateCompanies(5));
+            if (companyRepository.count() < 3) {
+                companyRepository.saveAllAndFlush(FakeGenerator.getInstance().generateCompanies(3));
             }
 
 //            HouseImageUtils.houseImageUtilsBean().generateHouseImages();

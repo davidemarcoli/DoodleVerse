@@ -19,6 +19,7 @@ public class Department {
     private String departmentName;
 
     @ManyToMany
+    @ToString.Exclude
     private List<Person> workers;
 
     @OneToMany(fetch = FetchType.EAGER)

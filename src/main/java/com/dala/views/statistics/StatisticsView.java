@@ -10,6 +10,8 @@ import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.*;
 import com.vaadin.flow.component.charts.model.style.SolidColor;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import lombok.extern.log4j.Log4j2;
@@ -28,21 +30,54 @@ public class StatisticsView extends VerticalLayout {
     private final CompanyRepository companyRepository;
     private final DepartmentRepository departmentRepository;
 
+    private Chart orgChart = null;
+
+    Tab moneyBoxplotTab = new Tab("Money Boxplot");
+    Tab orgChartTab = new Tab("Money Boxplot");
+
+    private final VerticalLayout content;
+
+//    Scroller scroller = new Scroller();
+//    {
+//        scroller.setScrollDirection(Scroller.ScrollDirection.BOTH);
+//        scroller.setSizeFull();
+//    }
+
+
+
     @Autowired
     public StatisticsView(PersonRepository personRepository, CompanyRepository companyRepository, DepartmentRepository departmentRepository) {
         this.personRepository = personRepository;
         this.companyRepository = companyRepository;
         this.departmentRepository = departmentRepository;
 
+        Tabs tabs = new Tabs(moneyBoxplotTab, orgChartTab);
+        tabs.addSelectedChangeListener(event ->
+                setContent(event.getSelectedTab())
+        );
+
+        content = new VerticalLayout();
+        content.setSpacing(false);
+        content.setSizeFull();
+        setContent(tabs.getSelectedTab());
+
+        add(tabs, content);
+
         setupPage();
     }
 
     public void setupPage() {
-
-        addMoneyPlot();
-        addOrgChart();
-
         setSizeFull();
+    }
+
+    private void setContent(Tab tab) {
+        content.removeAll();
+
+        if (tab.equals(moneyBoxplotTab)) {
+            addMoneyPlot();
+        } else if (tab.equals(orgChartTab)) {
+            addOrgChart();
+        }
     }
 
     public void addMoneyPlot() {
@@ -69,34 +104,40 @@ public class StatisticsView extends VerticalLayout {
                 analysis.high()));
 
         conf.setSeries(series);
-        add(moneyBoxplot);
+        content.add(moneyBoxplot);
     };
 
     NodeSeries series = new NodeSeries();
     Node nextNode;
     Node currentNode;
     Department currentDepartment;
+    int level = 0;
 
     public void addOrgChart() {
+        if (orgChart != null) {
+            content.add(orgChart);
+            return;
+        }
+
         Chart orgChart = new Chart(ChartType.ORGANIZATION);
         Configuration conf = orgChart.getConfiguration();
         conf.getChart().setInverted(true);
 //        conf.getChart().setHeight("500px");
         conf.getTooltip().setOutside(true);
         conf.setTitle("Organization Chart");
+        conf.setScrollbar(new Scrollbar());
         PlotOptionsOrganization plotOptions = new PlotOptionsOrganization();
         plotOptions.setColorByPoint(false);
         plotOptions.setColor(new SolidColor("#007ad0"));
 
         //Special color for first level
         Level level0 = new Level();
-        level0.setLevel(0);
+        level0.setLevel(level);
         level0.setColor(new SolidColor("#99AED3"));
         plotOptions.addLevel(level0);
         conf.setPlotOptions(plotOptions);
 
         series.setName("City");
-        ArrayList<Department> departments = new ArrayList<>(departmentRepository.findAll());
 
         ArrayList<Company> companies = new ArrayList<>(companyRepository.findAll());
 
@@ -172,9 +213,9 @@ public class StatisticsView extends VerticalLayout {
 
 
         for (Company company: companies) {
-            currentNode = new Node(company.getCompanyName());
+            nextNode = new Node(String.valueOf(company.getId()), company.getCompanyName());
+            level = 0;
             addDepartmentsToSeries(new ArrayList<>(company.getDepartments()));
-
 //            for (Department department: company.getDepartments()) {
 //                currentDepartmentNode = new Node(department.getDepartmentName());
 //                currentLevelNodes.add(currentDepartmentNode);
@@ -192,24 +233,44 @@ public class StatisticsView extends VerticalLayout {
 ////                    }
 ////                }
 //            }
+
+//            level++;
+//
+//            if (level == 2) {
+//                break;
+//            }
         }
 
-
+        orgChart.setSizeFull();
 
         conf.addSeries(series);
-        add(orgChart);
+
+        this.orgChart = orgChart;
+        content.add(orgChart);
     }
 
 
-    public void addDepartmentsToSeries(ArrayList<Department> nextDepartments) {
-        ArrayList<Department> currentDepartments = (ArrayList<Department>) nextDepartments.clone();
-        nextDepartments.clear();
-        for (Department department1: currentDepartments) {
-            nextNode = new Node(department1.getDepartmentName());
-            series.add(currentNode, nextNode);
-            addDepartmentsToSeries(new ArrayList<>(department1.getChildDepartments()));
-        }
+    public void addDepartmentsToSeries(ArrayList<Department> currentDepartments) {
+//        ArrayList<Department> currentDepartments = (ArrayList<Department>) nextDepartments.clone();
+//        nextDepartments.clear();
+
+        if (currentDepartments.isEmpty()) return;
 
         currentNode = nextNode;
+        level++;
+
+        for (Department department: currentDepartments) {
+            System.out.println(department.toString());
+            nextNode = new Node(String.valueOf(department.getId()), department.getDepartmentName());
+            System.out.println(currentNode.getName());
+            System.out.println(nextNode.getName());
+//            nextNode.setLevel(level);
+//            nextNode.setLayout(NodeLayout.HANGING);
+//            nextNode.setLevel(level);
+            series.add(currentNode, nextNode);
+            addDepartmentsToSeries(new ArrayList<>(department.getChildDepartments()));
+        }
+
+        level--;
     }
 }

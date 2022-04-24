@@ -45,7 +45,7 @@ public class FakeGenerator {
         ArrayList<Company> companies = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            ArrayList<Department> departments = generateDepartment(10);
+            ArrayList<Department> departments = generateDepartment(2);
             companies.add(new Company(0L, faker.company().name(), departments));
         }
 
@@ -73,7 +73,7 @@ public class FakeGenerator {
                 departmentWorkers.addAll(person);
             }
 
-            for (int j = 0; j < MathUtils.getInstance().randomMinMax(0, 5); j++) {
+            for (int j = 0; j < MathUtils.getInstance().randomMinMax(0, 3); j++) {
 
                 departmentWorkers.clear();
 
