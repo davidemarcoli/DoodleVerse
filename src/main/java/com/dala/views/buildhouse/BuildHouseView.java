@@ -193,8 +193,12 @@ public class BuildHouseView extends VerticalLayout implements Serializable {
     private void updateInfos() {
         Color inputColor = houseImageUtils.getColor(colorField.getValue());
 
-        if (inputColor == null)
+        if (inputColor == null) {
             inputColor = Color.black;
+            colorField.setInvalid(true);
+        } else {
+            colorField.setInvalid(false);
+        }
 
         currentHouse.setCeilingColor(Integer.toHexString(inputColor.getRGB()).substring(2));
         currentHouse.setSize(sizeRepository.getSizeByType(sizeSelect.getValue()).orElse(null));
