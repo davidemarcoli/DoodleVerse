@@ -3,6 +3,7 @@ package com.dala.views.buildhouse;
 import com.dala.data.building.ceiling.Ceiling;
 import com.dala.data.building.ceiling.CeilingRepository;
 import com.dala.data.building.house.House;
+import com.dala.data.building.house.HouseBuilder;
 import com.dala.data.building.house.HouseRepository;
 import com.dala.data.building.size.Size;
 import com.dala.data.building.size.SizeRepository;
@@ -65,7 +66,7 @@ public class BuildHouseView extends VerticalLayout implements Serializable {
     Image houseImage = new Image();
     Text price = new Text("0$");
 
-    House currentHouse = new House();
+    House currentHouse = null;
 
 
     public void setupPage() {
@@ -200,9 +201,15 @@ public class BuildHouseView extends VerticalLayout implements Serializable {
             colorField.setInvalid(false);
         }
 
-        currentHouse.setCeilingColor(Integer.toHexString(inputColor.getRGB()).substring(2));
-        currentHouse.setSize(sizeRepository.getSizeByType(sizeSelect.getValue()).orElse(null));
-        currentHouse.setWall(wallRepository.getWallByType(wallSelect.getValue()).orElse(null));
+        currentHouse = new HouseBuilder()
+                .ceilingColor(Integer.toHexString(inputColor.getRGB()).substring(2))
+                        .size(sizeRepository.getSizeByType(sizeSelect.getValue()).orElse(null))
+                                .wall(wallRepository.getWallByType(wallSelect.getValue()).orElse(null))
+                                        .build();
+
+//        currentHouse.setCeilingColor(Integer.toHexString(inputColor.getRGB()).substring(2));
+//        currentHouse.setSize(sizeRepository.getSizeByType(sizeSelect.getValue()).orElse(null));
+//        currentHouse.setWall(wallRepository.getWallByType(wallSelect.getValue()).orElse(null));
 
 //        selectedStuff.setText("Ceiling: " + "#" + currentHouse.getCeilingColor() + "\n" +
 //                "Size: " + currentHouse.getSize().getType() + "\n" +

@@ -3,6 +3,7 @@ package com.dala.data.generator;
 import com.dala.data.building.ceiling.Ceiling;
 import com.dala.data.building.ceiling.CeilingRepository;
 import com.dala.data.building.house.House;
+import com.dala.data.building.house.HouseBuilder;
 import com.dala.data.building.house.HouseRepository;
 import com.dala.data.building.size.Size;
 import com.dala.data.building.size.SizeRepository;
@@ -91,11 +92,15 @@ public class DataGenerator {
             saveWallIfNotExists("Brick");
 
             if (houseRepository.count() < 1) {
-                House house = new House();
-                house.setCeilingColor(Integer.toHexString(Color.blue.getRGB()).substring(2));
-//                house.setCeiling_color(Integer.toHexString(Objects.requireNonNull(getColorByName("blue")).getRGB()).substring(2));
-                house.setSize(sizeRepository.getSizeByType("Extra Wide").orElse(null));
-                house.setWall(wallRepository.getWallByType("Wood").orElse(null));
+                House house = new HouseBuilder()
+                        .ceilingColor(Integer.toHexString(Color.blue.getRGB()).substring(2))
+                                .size(sizeRepository.getSizeByType("Extra Wide").orElse(null))
+                                        .wall(wallRepository.getWallByType("Wood").orElse(null))
+                                                .build();
+//                house.setCeilingColor(Integer.toHexString(Color.blue.getRGB()).substring(2));
+////                house.setCeiling_color(Integer.toHexString(Objects.requireNonNull(getColorByName("blue")).getRGB()).substring(2));
+//                house.setSize(sizeRepository.getSizeByType("Extra Wide").orElse(null));
+//                house.setWall(wallRepository.getWallByType("Wood").orElse(null));
                 houseRepository.save(house);
             }
 
