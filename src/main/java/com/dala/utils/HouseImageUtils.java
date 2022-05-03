@@ -99,19 +99,19 @@ public class HouseImageUtils {
         Color grassColor = Color.GREEN;
         graphics2D.setPaint(grassColor);
 
-        System.out.println("Width: " + width);
+        log.debug("Width: " + width);
 
         for (int i = 0; i < width; i += random.nextInt(10)) {
             float randOffset = random.nextFloat(50);
             boolean isNegativeOffset = random.nextBoolean();
             int grassHeight = MathUtils.getInstance().randomMinMax(100, 200);
 
-            System.out.println("Grass Height: " + grassHeight);
-            System.out.println("Random Offset: " + randOffset);
-            System.out.println("Is Negative Offset: " + isNegativeOffset);
+            log.debug("Grass Height: " + grassHeight);
+            log.debug("Random Offset: " + randOffset);
+            log.debug("Is Negative Offset: " + isNegativeOffset);
 
-            graphics2D.draw(new Line2D.Float(i, bufferedImage.getHeight(), i + (isNegativeOffset ? randOffset * -1 : randOffset), bufferedImage.getHeight() - grassHeight));
-            System.out.println("Drawing grass");
+            graphics2D.fill(new Line2D.Float(i, bufferedImage.getHeight(), i + (isNegativeOffset ? randOffset * -1 : randOffset), bufferedImage.getHeight() - grassHeight));
+            log.debug("Drawing grass");
         }
 
         return image.getAbsolutePath();
