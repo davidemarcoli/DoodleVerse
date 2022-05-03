@@ -97,23 +97,11 @@ public class CitizenManagementView extends VerticalLayout {
     }
 
     private void setupDataProvider() {
-//        crud.addNewListener(personNewEvent -> {
-//            log.info("New");
-//            dataProvider.persist(personNewEvent.getItem());
-//            setupToolbar();
-//        });
-
         crud.addSaveListener(personSaveEvent -> {
             log.info("Save");
             dataProvider.persist(personSaveEvent.getItem());
             setupToolbar();
         });
-
-
-//        crud.addEditListener(personEditEvent -> {
-//            log.info("Edit");
-//            dataProvider.persist(personEditEvent.getItem());
-//        });
 
         crud.addDeleteListener(personDeleteEvent -> {
             log.info("Delete");
@@ -154,7 +142,6 @@ public class CitizenManagementView extends VerticalLayout {
         Button button = new Button("New person", VaadinIcon.PLUS.create());
         button.addClickListener(event -> {
             Person newPerson = new Person();
-//            newPerson.setMoney(MathUtils.round(FakeGenerator.getInstance().randomBetween(10000, 100000), 2));
             crud.edit(newPerson, Crud.EditMode.NEW_ITEM);
         });
         button.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
