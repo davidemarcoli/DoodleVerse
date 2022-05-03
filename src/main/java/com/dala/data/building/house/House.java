@@ -11,8 +11,6 @@ import java.nio.file.Path;
 
 @Entity
 @Getter
-@Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class House extends Building {
 
@@ -31,6 +29,11 @@ public class House extends Building {
     @ManyToOne
     private Wall wall;
 
+    public House(HouseBuilder houseBuilder) {
+        this.ceilingColor = houseBuilder.getCeilingColor();
+        this.size = houseBuilder.getSize();
+        this.wall = houseBuilder.getWall();
+    }
 
     @Override
     public Path getPictureOfBuilding(boolean isNight) {
