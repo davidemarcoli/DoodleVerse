@@ -13,23 +13,16 @@ import com.dala.data.person.PersonRepository;
 import com.dala.security.Role;
 import com.dala.data.user.User;
 import com.dala.data.user.UserRepository;
-import com.dala.utils.HouseImageUtils;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.Collections;
-import java.util.Objects;
 
-import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import javax.imageio.ImageIO;
 
 @SpringComponent
 @Log4j2
@@ -85,9 +78,9 @@ public class DataGenerator {
                 userRepository.save(admin);
             }
 
-            saveCeilingIfNotExists("Red");
-            saveCeilingIfNotExists("Yellow");
-            saveCeilingIfNotExists("Blue");
+            saveCeilingIfNotExists(Color.red.getRGB());
+            saveCeilingIfNotExists(Color.yellow.getRGB());
+            saveCeilingIfNotExists(Color.blue.getRGB());
 
             saveSizeIfNotExists("Small", 800);
             saveSizeIfNotExists("Wide", 1000);
@@ -99,7 +92,7 @@ public class DataGenerator {
 
             if (houseRepository.count() < 1) {
                 House house = new House();
-                house.setCeiling(ceilingRepository.getCeilingByType("blue").orElse(null));
+                house.setCeilingColor(Integer.toHexString(Color.blue.getRGB()).substring(2));
 //                house.setCeiling_color(Integer.toHexString(Objects.requireNonNull(getColorByName("blue")).getRGB()).substring(2));
                 house.setSize(sizeRepository.getSizeByType("Extra Wide").orElse(null));
                 house.setWall(wallRepository.getWallByType("Wood").orElse(null));
@@ -126,9 +119,9 @@ public class DataGenerator {
         return userRepository.findByUsername(username) != null;
     }
 
-    public void saveCeilingIfNotExists(String type) {
-        if (ceilingRepository.getCeilingByType(type).isEmpty()) {
-            ceilingRepository.save(new Ceiling(0L, type));
+    public void saveCeilingIfNotExists(Integer color) {
+        if (ceilingRepository.getCeilingByColor(color).isEmpty()) {
+            ceilingRepository.save(new Ceiling(0L, color));
         }
     }
 
