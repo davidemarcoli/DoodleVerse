@@ -5,6 +5,8 @@ It contains the Doodleverse Project for the Modul 326.
 
 ## Running the application
 
+<strong>IMPORTANT:</strong> You need to have Java 17 installed on your machine!
+
 The project is a Maven project. To run it from the command line,
 type `mvnw` (Windows), or `./mvnw` (Mac & Linux), then open
 http://localhost:8080 in your browser.
