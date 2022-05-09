@@ -2,6 +2,8 @@ package com.dala.views.cityoverview;
 
 import com.dala.data.building.house.House;
 import com.dala.data.building.house.HouseRepository;
+import com.dala.data.company.Company;
+import com.dala.data.company.CompanyRepository;
 import com.dala.data.person.Person;
 import com.dala.data.person.PersonDataProvider;
 import com.dala.data.person.PersonRepository;
@@ -30,18 +32,18 @@ import java.util.List;
 @PermitAll
 public class CityOverviewView extends VerticalLayout {
     private final HouseRepository houseRepository;
-
+    private final CompanyRepository companyRepository;
     HouseImageUtils houseImageUtils = HouseImageUtils.getInstance();
-
     @Autowired
-    public CityOverviewView(HouseRepository houseRepository) {
+    public CityOverviewView(HouseRepository houseRepository, CompanyRepository companyRepository) {
         this.houseRepository = houseRepository;
+        this.companyRepository = companyRepository;
 
         setupPage();
     }
-
     public void setupPage() {
         List<House> houses = houseRepository.findAll();
+        List<Company> companies = companyRepository.findAll();
 
         for (House house: houses) {
             Image image = new Image();
@@ -58,6 +60,15 @@ public class CityOverviewView extends VerticalLayout {
             image.setWidth(house.getSize().getWidth()/2f, Unit.PIXELS);
             image.setHeight(500, Unit.PIXELS);
             add(image);
+        }
+
+        for (Company company: companies) {
+            Image companyImage = new Image();
+            companyImage.setSrc("images/office.jpg");
+            companyImage.setHeight(400, Unit.PIXELS);
+
+            add(companyImage);
+            add(company.getCompanyName());
         }
 
         setSizeFull();
