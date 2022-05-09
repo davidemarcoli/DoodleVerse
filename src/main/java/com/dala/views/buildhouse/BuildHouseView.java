@@ -148,6 +148,10 @@ public class BuildHouseView extends VerticalLayout implements Serializable {
         getStyle().set("text-align", "center");
     }
 
+
+    /**
+     * Saves the currectly composed house
+     */
     @SneakyThrows
     private void saveHouse() {
 
@@ -168,6 +172,9 @@ public class BuildHouseView extends VerticalLayout implements Serializable {
         }
     }
 
+    /**
+     * Set the image source of the image object
+     */
     private void setImageSource() {
         String source = houseImageUtils.generateImageByHouse(currentHouse);
         StreamResource resource = new StreamResource(Arrays.stream(source.split("/")).reduce((first, second) -> second).orElse("image.jpg"), () -> {
@@ -185,6 +192,9 @@ public class BuildHouseView extends VerticalLayout implements Serializable {
         houseImage.setSrc(resource);
     }
 
+    /**
+     * Update the house infos on change
+     */
     private void updateInfos() {
         Color inputColor = houseImageUtils.getColor(colorField.getValue());
 
@@ -202,6 +212,10 @@ public class BuildHouseView extends VerticalLayout implements Serializable {
                 .build();
     }
 
+    /**
+     * Start a Loading-Bar when saving
+     * @return the Loading-Bar Thread
+     */
     @SneakyThrows
     private Thread startLoadingBar() {
         return new Thread(() -> {

@@ -44,6 +44,9 @@ public class CityOverviewView extends VerticalLayout {
         setupPage();
     }
 
+    /**
+     * Append the houses to the page in random order
+     */
     public void setupPage() {
         List<House> houses = houseRepository.findAll();
         List<Company> companies = companyRepository.findAll();
@@ -62,6 +65,10 @@ public class CityOverviewView extends VerticalLayout {
         setSizeFull();
     }
 
+    /**
+     * Append the house to the page
+     * @param house the house to append
+     */
     public void appendHouseImage(House house) {
         Image image = new Image();
         String source = houseImageUtils.generateImageByHouse(house);
@@ -79,6 +86,10 @@ public class CityOverviewView extends VerticalLayout {
         add(image);
     }
 
+    /**
+     * Append the company to the page
+     * @param company the company to append
+     */
     public void appendCompanyImage(Company company) {
         Image companyImage = new Image();
         companyImage.setSrc("images/office.jpg");

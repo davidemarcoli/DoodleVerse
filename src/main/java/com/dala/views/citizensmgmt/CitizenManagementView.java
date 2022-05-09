@@ -53,6 +53,10 @@ public class CitizenManagementView extends VerticalLayout {
         setupPage();
     }
 
+    /**
+     * Create the CRUD Editor
+     * @return the CrudEditor
+     */
     private CrudEditor<Person> createEditor() {
         TextField firstName = new TextField("First name");
         TextField lastName = new TextField("Last name");
@@ -104,6 +108,9 @@ public class CitizenManagementView extends VerticalLayout {
         });
     }
 
+    /**
+     * Setup the Grid
+     */
     private void setupGrid() {
         Grid<Person> grid = crud.getGrid();
 
@@ -130,6 +137,9 @@ public class CitizenManagementView extends VerticalLayout {
         );
     }
 
+    /**
+     * Setup the grid toolbar
+     */
     private void setupToolbar() {
         Html total = new Html("<span>Total: <b>" + personRepository.count() + "</b> persons</span>");
 

@@ -46,6 +46,10 @@ public class CompanyManagementView extends VerticalLayout {
         setupPage();
     }
 
+    /**
+     * Create the Company CRUD-Editor
+     * @return the created Crud-Editor
+     */
     private CrudEditor<Company> createEditor() {
         TextField companyName = new TextField("Company");
         FormLayout form = new FormLayout(companyName);
@@ -88,6 +92,9 @@ public class CompanyManagementView extends VerticalLayout {
         });
     }
 
+    /**
+     * Setup the Company Grid
+     */
     private void setupGrid() {
         Grid<Company> grid = crud.getGrid();
 
@@ -110,6 +117,9 @@ public class CompanyManagementView extends VerticalLayout {
         );
     }
 
+    /**
+     * Setup the toolbar
+     */
     private void setupToolbar() {
         Html total = new Html("<span>Total: <b>" + companyRepository.count() + "</b> companies</span>");
 

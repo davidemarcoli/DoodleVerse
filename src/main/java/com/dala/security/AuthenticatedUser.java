@@ -24,16 +24,27 @@ public class AuthenticatedUser {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Get the Authentication Object from the current logged in User
+     * @return the Authentication Object
+     */
     private Optional<Authentication> getAuthentication() {
         SecurityContext context = SecurityContextHolder.getContext();
         return Optional.ofNullable(context.getAuthentication())
                 .filter(authentication -> !(authentication instanceof AnonymousAuthenticationToken));
     }
 
+    /**
+     * Get the User by the username of the current logged in user
+     * @return the User
+     */
     public Optional<User> get() {
         return getAuthentication().map(authentication -> userRepository.findByUsername(authentication.getName()));
     }
 
+    /**
+     * Log the user out
+     */
     public void logout() {
         UI.getCurrent().getPage().setLocation(SecurityConfiguration.LOGOUT_URL);
         SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();

@@ -20,11 +20,20 @@ public class SecurityConfiguration extends VaadinWebSecurityConfigurerAdapter {
 
     public static final String LOGOUT_URL = "/";
 
+
+    /**
+     * Specify the password encoder
+     * @return the BCrypt Password Encoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Specify the Role Hierarchy for the Users
+     * @return the RoleHierarchy
+     */
     @Bean
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
@@ -40,6 +49,10 @@ public class SecurityConfiguration extends VaadinWebSecurityConfigurerAdapter {
         return expressionHandler;
     }
 
+    /**
+     * Configure the login view
+     * @param http the HttpSecurity
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -47,6 +60,11 @@ public class SecurityConfiguration extends VaadinWebSecurityConfigurerAdapter {
         setLoginView(http, LoginView.class, LOGOUT_URL);
     }
 
+
+    /**
+     * Configure the allowed paths
+     * @param web the WebSecurity
+     */
     @Override
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);

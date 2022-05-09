@@ -23,12 +23,23 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Get Authorities by User
+     * @param user the User to get the Authorities from
+     * @return the List of Authorities from the User
+     */
     private static List<GrantedAuthority> getAuthorities(User user) {
         return user.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.toString()))
                 .collect(Collectors.toList());
 
     }
 
+    /**
+     * Get the UserDetails from a given Username
+     * @param username the given username
+     * @return the UserDetails Object from the User and the encrypted password
+     * @throws UsernameNotFoundException When the user doesn't exists
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);

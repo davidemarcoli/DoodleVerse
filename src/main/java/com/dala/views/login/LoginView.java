@@ -14,11 +14,11 @@ public class LoginView extends LoginOverlay {
         LoginI18n i18n = LoginI18n.createDefault();
         i18n.setHeader(new LoginI18n.Header());
         i18n.getHeader().setTitle("DoodleVerse");
-//        i18n.getHeader().setDescription("Login using user/user or admin/admin");
+        i18n.getHeader().setDescription("Login using davide/davide or lazar/lazar");
         i18n.setAdditionalInformation(null);
         setI18n(i18n);
 
-        setForgotPasswordButtonVisible(true);
+        setForgotPasswordButtonVisible(false);
         setOpened(true);
     }
 }

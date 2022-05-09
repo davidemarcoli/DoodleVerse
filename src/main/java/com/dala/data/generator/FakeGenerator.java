@@ -40,16 +40,26 @@ public class FakeGenerator {
         return instance;
     }
 
+    /**
+     * Generate random persons
+     * @param count the number of randomly generated persons
+     * @return the generated persons
+     */
     public ArrayList<Person> generateRandomPersons(int count) {
         ArrayList<Person> persons = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            persons.add(new Person(faker.name().firstName(), faker.name().lastName(), MathUtils.getInstance().round(randomBetween(1000.0, 10000.0), 2)));
+            persons.add(new Person(faker.name().firstName(), faker.name().lastName(), MathUtils.getInstance().round(MathUtils.getInstance().randomMinMax(1000.0, 10000.0), 2)));
         }
 
         return persons;
     }
 
+    /**
+     * Generate random companys
+     * @param count the number of randomly generated companys
+     * @return the generated companys
+     */
     public ArrayList<Company> generateCompanies(int count) {
         ArrayList<Company> companies = new ArrayList<>();
 
@@ -62,6 +72,11 @@ public class FakeGenerator {
 
     }
 
+    /**
+     * Generate random departments
+     * @param count the number of randomly generated departments
+     * @return the generated departments
+     */
     public ArrayList<Department> generateDepartment(int count) {
         ArrayList<Department> departments = new ArrayList<>();
         List<Person> persons = personRepository.findAll();
@@ -111,10 +126,5 @@ public class FakeGenerator {
 
         return departments;
 
-
-    }
-
-    public double randomBetween(double min, double max) {
-        return random.nextDouble(max - min + 1) + min;
     }
 }

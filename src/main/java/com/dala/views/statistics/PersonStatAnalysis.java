@@ -21,23 +21,37 @@ public class PersonStatAnalysis {
         });
     }
 
+    /**
+     * Get the lowest number from the moneylist
+     * @return the lowest number
+     */
     public Number low() {
-//        Collections.sort(moneyList);
-//        return moneyList.get(0);
-
         return Collections.min(moneyList);
     }
 
+    /**
+     * Get the highest number of the moneylist
+     * @return the highest number
+     */
     public Number high() {
         return Collections.max(moneyList);
     }
 
+    /**
+     * Return the quartile from a given percent
+     * @param percent the given percent to get the quartile from
+     * @return the found number
+     */
     public Number quartile(int percent) {
         Collections.sort(moneyList);
         int n = Math.round(moneyList.size() * percent / 100f);
         return moneyList.get(n);
     }
 
+    /**
+     * Get the median of the moneylist
+     * @return the median
+     */
     public Number median() {
         Collections.sort(moneyList);
 

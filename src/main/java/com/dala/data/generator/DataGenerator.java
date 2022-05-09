@@ -1,7 +1,5 @@
 package com.dala.data.generator;
 
-import com.dala.data.building.ceiling.Ceiling;
-import com.dala.data.building.ceiling.CeilingRepository;
 import com.dala.data.building.house.House;
 import com.dala.data.building.house.HouseBuilder;
 import com.dala.data.building.house.HouseRepository;
@@ -34,9 +32,6 @@ public class DataGenerator {
 
     @Autowired
     private PersonRepository personRepository;
-
-    @Autowired
-    private CeilingRepository ceilingRepository;
 
     @Autowired
     private SizeRepository sizeRepository;
@@ -78,10 +73,6 @@ public class DataGenerator {
                 userRepository.save(admin);
             }
 
-            saveCeilingIfNotExists(Color.red.getRGB());
-            saveCeilingIfNotExists(Color.yellow.getRGB());
-            saveCeilingIfNotExists(Color.blue.getRGB());
-
             saveSizeIfNotExists("Small", 800);
             saveSizeIfNotExists("Wide", 1000);
             saveSizeIfNotExists("Extra Wide", 1400);
@@ -118,18 +109,21 @@ public class DataGenerator {
         return userRepository.findByUsername(username) != null;
     }
 
-    public void saveCeilingIfNotExists(Integer color) {
-        if (ceilingRepository.getCeilingByColor(color).isEmpty()) {
-            ceilingRepository.save(new Ceiling(0L, color));
-        }
-    }
-
+    /**
+     * Save the Size if it not allready exists
+     * @param type the Size name
+     * @param width the Width
+     */
     public void saveSizeIfNotExists(String type, int width) {
         if (sizeRepository.getSizeByType(type).isEmpty()) {
             sizeRepository.save(new Size(0L, type, width));
         }
     }
 
+    /**
+     *
+     * @param type
+     */
     public void saveWallIfNotExists(String type) {
         if (wallRepository.getWallByType(type).isEmpty()) {
             wallRepository.save(new Wall(0L, type));

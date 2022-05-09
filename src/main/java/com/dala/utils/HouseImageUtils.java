@@ -31,6 +31,11 @@ public class HouseImageUtils {
         return instance;
     }
 
+    /**
+     * Generate a house image from a given house
+     * @param house the house to draw
+     * @return the Filepath to the drawed image
+     */
     @SneakyThrows
     public String generateImageByHouse(House house) {
 
@@ -91,6 +96,11 @@ public class HouseImageUtils {
         return image.getAbsolutePath();
     }
 
+    /**
+     * Get the Color Object from a specified String
+     * @param color the String of the Color
+     * @return the color or null if it hasn't found any
+     */
     public Color getColor(String color) {
 
         try {
@@ -131,6 +141,11 @@ public class HouseImageUtils {
         return null;
     }
 
+    /**
+     * Get the Filename from a given house
+     * @param house the given house
+     * @return the Filename
+     */
     public String getFileName(House house) {
         return "house_" + house.getCeilingColor() + "_" +
                 house.getSize().getType().toLowerCase().replaceAll(" ", "") + "_" +
