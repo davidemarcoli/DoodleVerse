@@ -3,7 +3,6 @@ package com.dala.views.companymgmt;
 import com.dala.data.company.Company;
 import com.dala.data.company.CompanyDataProvider;
 import com.dala.data.company.CompanyRepository;
-import com.dala.data.person.Person;
 import com.dala.views.MainLayout;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.button.Button;
@@ -35,10 +34,17 @@ import java.util.List;
 public class CompanyManagementView extends VerticalLayout {
     private final CompanyRepository companyRepository;
     private final CompanyDataProvider dataProvider;
-
-    Crud<Company> crud;
     private final String COMPANY_NAME = "companyName";
     private final String EDIT_COLUMN = "vaadin-crud-edit-column";
+    Crud<Company> crud;
+
+    @Autowired
+    public CompanyManagementView(CompanyDataProvider companyDataProvider, CompanyRepository companyRepository) {
+        this.dataProvider = companyDataProvider;
+        this.companyRepository = companyRepository;
+
+        setupPage();
+    }
 
     private CrudEditor<Company> createEditor() {
         TextField companyName = new TextField("Company");
@@ -53,14 +59,6 @@ public class CompanyManagementView extends VerticalLayout {
         binder.forField(companyName).asRequired().bind(Company::getCompanyName, Company::setCompanyName);
 
         return new BinderCrudEditor<>(binder, form);
-    }
-
-    @Autowired
-    public CompanyManagementView(CompanyDataProvider companyDataProvider, CompanyRepository companyRepository) {
-        this.dataProvider = companyDataProvider;
-        this.companyRepository = companyRepository;
-
-        setupPage();
     }
 
     public void setupPage() {

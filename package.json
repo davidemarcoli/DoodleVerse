@@ -116,6 +116,7 @@
     "@vaadin/virtual-list": "23.0.3",
     "construct-style-sheets-polyfill": "3.0.4",
     "date-fns": "2.23.0",
+    "leaflet": "^1.6.0",
     "line-awesome": "1.3.0",
     "lit": "2.1.4"
   },
@@ -249,7 +250,8 @@
     "construct-style-sheets-polyfill": "$construct-style-sheets-polyfill",
     "date-fns": "$date-fns",
     "lit": "$lit",
-    "line-awesome": "$line-awesome"
+    "line-awesome": "$line-awesome",
+    "leaflet": "$leaflet"
   },
   "vaadin": {
     "dependencies": {
@@ -366,6 +368,7 @@
       "@vaadin/virtual-list": "23.0.3",
       "construct-style-sheets-polyfill": "3.0.4",
       "date-fns": "2.23.0",
+      "leaflet": "^1.6.0",
       "line-awesome": "1.3.0",
       "lit": "2.1.4"
     },
@@ -380,6 +383,6 @@
       "workbox-core": "6.5.0",
       "workbox-precaching": "6.5.0"
     },
-    "hash": "e3b5802124064b25e1277c56586bf3eb017ddc867ebe7bb9b47c7e58bbde081a"
+    "hash": "26e1ad0a643651a98068d41f03592008ac9bcf620ee6efb1b56866c63fbb53f4"
   }
 }

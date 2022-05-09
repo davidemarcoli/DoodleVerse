@@ -7,5 +7,5 @@ import java.util.Optional;
 
 @Repository
 public interface SizeRepository extends JpaRepository<Size, Long> {
-    public Optional<Size> getSizeByType(String type);
+    Optional<Size> getSizeByType(String type);
 }

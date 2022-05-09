@@ -1,13 +1,12 @@
 package com.dala.data.building.house;
 
 import com.dala.data.building.Building;
-import com.dala.data.building.ceiling.Ceiling;
 import com.dala.data.building.size.Size;
 import com.dala.data.building.wall.Wall;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.nio.file.Path;
 
 @Entity
 @Getter
@@ -17,9 +16,6 @@ public class House extends Building {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-//    @ManyToOne
-//    private Ceiling ceiling;
 
     private String ceilingColor;
 
@@ -33,10 +29,5 @@ public class House extends Building {
         this.ceilingColor = houseBuilder.getCeilingColor();
         this.size = houseBuilder.getSize();
         this.wall = houseBuilder.getWall();
-    }
-
-    @Override
-    public Path getPictureOfBuilding(boolean isNight) {
-        return Path.of("images/empty-plant.png");
     }
 }

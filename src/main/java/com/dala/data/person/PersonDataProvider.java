@@ -22,37 +22,6 @@ public class PersonDataProvider extends AbstractBackEndDataProvider<Person, Crud
 
     private Consumer<Long> sizeChangeListener;
 
-    @Override
-    protected Stream<Person> fetchFromBackEnd(Query<Person, CrudFilter> query) {
-        int offset = query.getOffset();
-        int limit = query.getLimit();
-
-        Stream<Person> stream = personRepository.findAll().stream();
-
-        if (query.getFilter().isPresent()) {
-            stream = stream
-                    .filter(predicate(query.getFilter().get()))
-                    .sorted(comparator(query.getFilter().get()));
-        }
-
-        return stream.skip(offset).limit(limit);
-    }
-
-    @Override
-    protected int sizeInBackEnd(Query<Person, CrudFilter> query) {
-        long count = fetchFromBackEnd(query).count();
-
-        if (sizeChangeListener != null) {
-            sizeChangeListener.accept(count);
-        }
-
-        return (int) count;
-    }
-
-    void setSizeChangeListener(Consumer<Long> listener) {
-        sizeChangeListener = listener;
-    }
-
     private static Predicate<Person> predicate(CrudFilter filter) {
         return filter.getConstraints().entrySet().stream()
                 .map(constraint -> (Predicate<Person>) person -> {
@@ -99,6 +68,37 @@ public class PersonDataProvider extends AbstractBackEndDataProvider<Person, Crud
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    @Override
+    protected Stream<Person> fetchFromBackEnd(Query<Person, CrudFilter> query) {
+        int offset = query.getOffset();
+        int limit = query.getLimit();
+
+        Stream<Person> stream = personRepository.findAll().stream();
+
+        if (query.getFilter().isPresent()) {
+            stream = stream
+                    .filter(predicate(query.getFilter().get()))
+                    .sorted(comparator(query.getFilter().get()));
+        }
+
+        return stream.skip(offset).limit(limit);
+    }
+
+    @Override
+    protected int sizeInBackEnd(Query<Person, CrudFilter> query) {
+        long count = fetchFromBackEnd(query).count();
+
+        if (sizeChangeListener != null) {
+            sizeChangeListener.accept(count);
+        }
+
+        return (int) count;
+    }
+
+    void setSizeChangeListener(Consumer<Long> listener) {
+        sizeChangeListener = listener;
     }
 
     public void persist(Person item) {

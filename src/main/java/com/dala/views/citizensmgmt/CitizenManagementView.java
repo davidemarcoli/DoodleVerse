@@ -1,10 +1,8 @@
 package com.dala.views.citizensmgmt;
 
-import com.dala.data.generator.FakeGenerator;
 import com.dala.data.person.Person;
 import com.dala.data.person.PersonDataProvider;
 import com.dala.data.person.PersonRepository;
-import com.dala.utils.MathUtils;
 import com.dala.views.MainLayout;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.button.Button;
@@ -40,16 +38,20 @@ public class CitizenManagementView extends VerticalLayout {
 
     private final PersonRepository personRepository;
     private final PersonDataProvider dataProvider;
-
-    Crud<Person> crud;
-
-    Random rand = new Random();
-
-
     private final String FIRST_NAME = "firstName";
     private final String LAST_NAME = "lastName";
     private final String MONEY = "money";
     private final String EDIT_COLUMN = "vaadin-crud-edit-column";
+    Crud<Person> crud;
+    Random rand = new Random();
+
+    @Autowired
+    public CitizenManagementView(PersonDataProvider personDataProvider, PersonRepository personRepository) {
+        this.dataProvider = personDataProvider;
+        this.personRepository = personRepository;
+
+        setupPage();
+    }
 
     private CrudEditor<Person> createEditor() {
         TextField firstName = new TextField("First name");
@@ -73,14 +75,6 @@ public class CitizenManagementView extends VerticalLayout {
         binder.forField(money).asRequired().bind(Person::getMoney, Person::setMoney).setReadOnly(true);
 
         return new BinderCrudEditor<>(binder, form);
-    }
-
-    @Autowired
-    public CitizenManagementView(PersonDataProvider personDataProvider, PersonRepository personRepository) {
-        this.dataProvider = personDataProvider;
-        this.personRepository = personRepository;
-
-        setupPage();
     }
 
     public void setupPage() {

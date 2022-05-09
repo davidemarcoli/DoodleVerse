@@ -2,9 +2,7 @@ package com.dala.data.building.house;
 
 import com.dala.data.building.size.Size;
 import com.dala.data.building.wall.Wall;
-import lombok.Builder;
 import lombok.Getter;
-import org.springframework.security.core.userdetails.User;
 
 @Getter
 public class HouseBuilder {

@@ -1,15 +1,8 @@
 package com.dala.utils;
 
-import com.dala.data.building.ceiling.CeilingRepository;
 import com.dala.data.building.house.House;
-import com.dala.data.building.house.HouseRepository;
-import com.dala.data.building.size.SizeRepository;
-import com.dala.data.building.wall.WallRepository;
-import com.dala.data.person.PersonRepository;
-import com.dala.data.user.UserRepository;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
 import javax.imageio.ImageIO;
@@ -23,38 +16,19 @@ import java.util.Random;
 @Log4j2
 public class HouseImageUtils {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PersonRepository personRepository;
-
-    @Autowired
-    private CeilingRepository ceilingRepository;
-
-    @Autowired
-    private SizeRepository sizeRepository;
-
-    @Autowired
-    private WallRepository wallRepository;
-
-    @Autowired
-    private HouseRepository houseRepository;
-
+    private static HouseImageUtils instance;
     Random random = new Random();
 
-    @SneakyThrows
-    public void generateHouseImages() {
+    private HouseImageUtils() {
+    }
 
-        /*
-        Color your_color = new Color(128,128,128);
-        String hex = "#"+Integer.toHexString(your_color.getRGB()).substring(2);
-         */
-
-        for (House house : houseRepository.findAll()) {
-            generateImageByHouse(house);
+    @Bean
+    public static HouseImageUtils getInstance() {
+        if (instance == null) {
+            instance = new HouseImageUtils();
         }
 
+        return instance;
     }
 
     @SneakyThrows
@@ -161,19 +135,5 @@ public class HouseImageUtils {
         return "house_" + house.getCeilingColor() + "_" +
                 house.getSize().getType().toLowerCase().replaceAll(" ", "") + "_" +
                 house.getWall().getType().toLowerCase() + ".jpg";
-    }
-
-    private static HouseImageUtils instance;
-
-    private HouseImageUtils() {
-    }
-
-    @Bean
-    public static HouseImageUtils getInstance() {
-        if (instance == null) {
-            instance = new HouseImageUtils();
-        }
-
-        return instance;
     }
 }

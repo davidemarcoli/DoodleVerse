@@ -2,15 +2,20 @@ package com.dala.data.user;
 
 import com.dala.security.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.Set;
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "application_user")
-@Getter @Setter
-@AllArgsConstructor @NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id

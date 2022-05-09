@@ -10,8 +10,6 @@ import com.dala.data.building.wall.WallRepository;
 import com.dala.utils.HouseImageUtils;
 import com.dala.utils.MathUtils;
 import com.dala.views.MainLayout;
-import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -51,28 +49,28 @@ import java.util.Random;
 public class BuildHouseView extends VerticalLayout implements Serializable {
     @Serial
     private static final long serialVersionUID = 9142204424500605320L;
-
-    Random random = new Random();
     private final HouseRepository houseRepository;
-//    private final CeilingRepository ceilingRepository;
     private final SizeRepository sizeRepository;
     private final WallRepository wallRepository;
+    Random random = new Random();
     HouseImageUtils houseImageUtils = HouseImageUtils.getInstance();
 
     Select<String> sizeSelect = new Select<>();
     Select<String> wallSelect = new Select<>();
 
     TextField colorField = new TextField();
-
-//    Text selectedStuff = new Text("");
     Image houseImage = new Image();
-    Text price = new Text("0$");
 
     House currentHouse = null;
 
-    static ProgressBar progressBar = new ProgressBar();
-    static Notification notification = new Notification();
+    @Autowired
+    public BuildHouseView(HouseRepository houseRepository, SizeRepository sizeRepository, WallRepository wallRepository) {
+        this.houseRepository = houseRepository;
+        this.sizeRepository = sizeRepository;
+        this.wallRepository = wallRepository;
 
+        setupPage();
+    }
 
     public void setupPage() {
 
@@ -82,16 +80,13 @@ public class BuildHouseView extends VerticalLayout implements Serializable {
         createButton.setIcon(new Icon(VaadinIcon.HAMMER));
         createButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_LARGE);
         createButtonLayout.setAlignItems(Alignment.END);
-//        createButtonLayout.setVerticalComponentAlignment(Alignment.END);
 
         createButtonLayout.add(createButton);
         add(createButtonLayout);
 
-//        add(selectedStuff);
-
         houseImage.setAlt("The Selected House!");
+
         add(houseImage);
-//        add(price);
 
         HorizontalLayout dropdownLayout = new HorizontalLayout();
 
@@ -114,26 +109,15 @@ public class BuildHouseView extends VerticalLayout implements Serializable {
 
         colorField.setLabel("Ceiling Color");
         colorField.setRequired(true);
-//        Div div = new Div();
-//        Span colorText = new Span();
-//        colorText.getStyle().set("color", "blue");
-//        colorText.setText("blue");
-//        div.add(new Text("Example: "), colorText, new Text(" or "));
-//        colorText.setText("0000ff");
-//        div.add(colorText, new Text(" or "));
-//        colorText.setText("00f");
-//        div.add(colorText, new Text(" or "));
-//        colorText.setText("0, 0, 255");
-//        div.add(colorText);
-        String helperText = "Example: blue<br>or 0000ff or 00f<br>or 0, 0, 255";
-        Div helperDiv = new Div();
-        helperDiv.getElement().setProperty("innerHTML", helperText);
-        helperDiv.getStyle().set("text-align", "left");
-        colorField.setHelperComponent(helperDiv);
+        String colorHelperText = "Example: blue<br>or 0000ff or 00f<br>or 0, 0, 255";
+        Div colorHelperDiv = new Div();
+        colorHelperDiv.getElement().setProperty("innerHTML", colorHelperText);
+        colorHelperDiv.getStyle().set("text-align", "left");
+        colorField.setHelperComponent(colorHelperDiv);
         dropdownLayout.add(colorField);
 
-
         add(dropdownLayout);
+
 
         createButton.addClickListener(buttonClickEvent -> {
             saveHouse();
@@ -199,7 +183,6 @@ public class BuildHouseView extends VerticalLayout implements Serializable {
         houseImage.setWidth(width / 2f, Unit.PIXELS);
         houseImage.setHeight(500, Unit.PIXELS);
         houseImage.setSrc(resource);
-//        houseImage.setSizeFull();
     }
 
     private void updateInfos() {
@@ -214,44 +197,21 @@ public class BuildHouseView extends VerticalLayout implements Serializable {
 
         currentHouse = new HouseBuilder()
                 .ceilingColor(Integer.toHexString(inputColor.getRGB()).substring(2))
-                        .size(sizeRepository.getSizeByType(sizeSelect.getValue()).orElse(null))
-                                .wall(wallRepository.getWallByType(wallSelect.getValue()).orElse(null))
-                                        .build();
-
-//        currentHouse.setCeilingColor(Integer.toHexString(inputColor.getRGB()).substring(2));
-//        currentHouse.setSize(sizeRepository.getSizeByType(sizeSelect.getValue()).orElse(null));
-//        currentHouse.setWall(wallRepository.getWallByType(wallSelect.getValue()).orElse(null));
-
-//        selectedStuff.setText("Ceiling: " + "#" + currentHouse.getCeilingColor() + "\n" +
-//                "Size: " + currentHouse.getSize().getType() + "\n" +
-//                "Wall: " + currentHouse.getWall().getType());
+                .size(sizeRepository.getSizeByType(sizeSelect.getValue()).orElse(null))
+                .wall(wallRepository.getWallByType(wallSelect.getValue()).orElse(null))
+                .build();
     }
 
     @SneakyThrows
     private Thread startLoadingBar() {
-        UI ui = UI.getCurrent();
         return new Thread(() -> {
             ProgressBar loadingBar = new ProgressBar();
             loadingBar.setMin(0);
             loadingBar.setValue(0);
             loadingBar.setMax(MathUtils.getInstance().randomMinMax(2000, 5000));
-//            ui.access(() -> add(loadingBar));
 
             while (loadingBar.getMax() > loadingBar.getValue()) {
-
-                int nextValue;
-                if (loadingBar.getMax() / loadingBar.getValue() > 0.75) {
-                    nextValue = random.nextInt((int) (loadingBar.getMax() / 10));
-                } else {
-                    nextValue = random.nextInt((int) (loadingBar.getMax() / 5));
-                }
-
-                log.info("Min = " + loadingBar.getMin());
-                log.info("Max = " + loadingBar.getMax());
-                log.info("Value = " + loadingBar.getValue());
-                log.info("Next Value: " + loadingBar.getValue() + " + " + nextValue + " = " + (loadingBar.getValue() + nextValue));
-                log.info("__________________");
-
+                int nextValue = random.nextInt((int) (loadingBar.getMax() / 5));
 
                 try {
                     Thread.sleep(nextValue);
@@ -262,15 +222,5 @@ public class BuildHouseView extends VerticalLayout implements Serializable {
                 loadingBar.setValue(Math.min(loadingBar.getValue() + nextValue, loadingBar.getMax()));
             }
         });
-    }
-
-    @Autowired
-    public BuildHouseView(HouseRepository houseRepository/*, CeilingRepository ceilingRepository*/, SizeRepository sizeRepository, WallRepository wallRepository) {
-        this.houseRepository = houseRepository;
-//        this.ceilingRepository = ceilingRepository;
-        this.sizeRepository = sizeRepository;
-        this.wallRepository = wallRepository;
-
-        setupPage();
     }
 }

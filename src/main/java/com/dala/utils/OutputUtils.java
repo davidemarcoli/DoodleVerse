@@ -24,7 +24,7 @@ public class OutputUtils {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
-
+    private final static String alphabet = "abcdefghijklmnopqrstuvwxyz1234567890 ";
     static int[][][] letters = {
             {{0, 0, 1, 0, 0}, {0, 1, 0, 1, 0}, {1, 1, 1, 1, 1}, {1, 0, 0, 0, 1}, {1, 0, 0, 0, 1}}, //A
             {{1, 1, 1, 1, 0}, {1, 0, 0, 0, 1}, {1, 1, 1, 1, 0}, {1, 0, 0, 0, 1}, {1, 1, 1, 1, 0}}, //B
@@ -65,14 +65,14 @@ public class OutputUtils {
             {{0, 1, 1, 1, 0}, {1, 1, 0, 0, 1}, {1, 0, 1, 0, 1}, {1, 0, 0, 1, 1}, {0, 1, 1, 1, 0}}, //0
             {{0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}}  //SPACE
     };
-
     static String[] boxdrawingRoung = {"╭", "╮", "╰", "╯", "─", "│"};
     static String[] boxdrawingShelf = {"╔", "╗", "╚", "╝", "═", "║", "╠", "╣"};
     static String[] boxdrawingSelfmade = boxdrawingShelf;
     static String[] activeBoxdrawing = boxdrawingShelf;
-
     static Scanner scan = new Scanner(System.in);
-    private final static String alphabet = "abcdefghijklmnopqrstuvwxyz1234567890 ";
+
+    private OutputUtils() {
+    }
 
     public static void printBox(String text, int size) {
 
@@ -355,7 +355,7 @@ public class OutputUtils {
                     System.out.print(" ");
                 }
 
-                if (horizontalMiddleLines && !(verticalOuterLines)){
+                if (horizontalMiddleLines && !(verticalOuterLines)) {
                     System.out.print("\n ");
                 }
 
@@ -423,8 +423,5 @@ public class OutputUtils {
         } else {
             activeBoxdrawing = boxdrawingShelf;
         }
-    }
-
-    private OutputUtils() {
     }
 }

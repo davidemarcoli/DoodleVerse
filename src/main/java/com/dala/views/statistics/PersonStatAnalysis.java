@@ -8,9 +8,9 @@ import java.util.List;
 
 public class PersonStatAnalysis {
 
-    private ArrayList<Person> persons;
+    private final ArrayList<Person> persons;
 
-    private ArrayList<Double> moneyList = new ArrayList<>();
+    private final ArrayList<Double> moneyList = new ArrayList<>();
 
 
     public PersonStatAnalysis(List<Person> persons) {

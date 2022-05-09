@@ -11,8 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-@Setter @Getter
-@AllArgsConstructor @NoArgsConstructor
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Ceiling {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
