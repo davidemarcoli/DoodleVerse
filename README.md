@@ -1,11 +1,11 @@
 # DoodleVerse
 
-This project can be used as a starting point to create your own Vaadin application with Spring Boot.
-It contains all the necessary configuration and some placeholder files to get you started.
+This project is a Vaadin application with Spring Boot.
+It contains the Doodleverse Project for the Modul 326.
 
 ## Running the application
 
-The project is a standard Maven project. To run it from the command line,
+The project is a Maven project. To run it from the command line,
 type `mvnw` (Windows), or `./mvnw` (Mac & Linux), then open
 http://localhost:8080 in your browser.
 
