@@ -11,10 +11,9 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 /**
  * The entry point of the Spring Boot application.
- *
+ * <p>
  * Use the @PWA annotation make the application installable on phones, tablets
  * and some desktop browsers.
- *
  */
 @SpringBootApplication
 @Theme(value = "doodleverse", variant = Lumo.DARK)

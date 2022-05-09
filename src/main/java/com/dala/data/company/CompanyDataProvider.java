@@ -1,10 +1,9 @@
 package com.dala.data.company;
 
-import com.dala.data.person.Person;
 import com.vaadin.flow.component.crud.CrudFilter;
-import com.vaadin.flow.data.provider.*;
-import com.vaadin.flow.function.SerializableBiFunction;
-import com.vaadin.flow.function.SerializableFunction;
+import com.vaadin.flow.data.provider.AbstractBackEndDataProvider;
+import com.vaadin.flow.data.provider.Query;
+import com.vaadin.flow.data.provider.SortDirection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,37 +25,6 @@ public class CompanyDataProvider extends AbstractBackEndDataProvider<Company, Cr
     private CompanyRepository companyRepository;
 
     private Consumer<Long> sizeChangeListener;
-
-    @Override
-    protected Stream<Company> fetchFromBackEnd(Query<Company, CrudFilter> query) {
-        int offset = query.getOffset();
-        int limit = query.getLimit();
-
-        Stream<Company> stream = companyRepository.findAll().stream();
-
-        if (query.getFilter().isPresent()) {
-            stream = stream
-                    .filter(predicate(query.getFilter().get()))
-                    .sorted(comparator(query.getFilter().get()));
-        }
-
-        return stream.skip(offset).limit(limit);
-    }
-
-    @Override
-    protected int sizeInBackEnd(Query<Company, CrudFilter> query) {
-        long count = fetchFromBackEnd(query).count();
-
-        if (sizeChangeListener != null) {
-            sizeChangeListener.accept(count);
-        }
-
-        return (int) count;
-    }
-
-    void setSizeChangeListener(Consumer<Long> listener) {
-        sizeChangeListener = listener;
-    }
 
     private static Predicate<Company> predicate(CrudFilter filter) {
         return filter.getConstraints().entrySet().stream()
@@ -104,6 +72,37 @@ public class CompanyDataProvider extends AbstractBackEndDataProvider<Company, Cr
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    @Override
+    protected Stream<Company> fetchFromBackEnd(Query<Company, CrudFilter> query) {
+        int offset = query.getOffset();
+        int limit = query.getLimit();
+
+        Stream<Company> stream = companyRepository.findAll().stream();
+
+        if (query.getFilter().isPresent()) {
+            stream = stream
+                    .filter(predicate(query.getFilter().get()))
+                    .sorted(comparator(query.getFilter().get()));
+        }
+
+        return stream.skip(offset).limit(limit);
+    }
+
+    @Override
+    protected int sizeInBackEnd(Query<Company, CrudFilter> query) {
+        long count = fetchFromBackEnd(query).count();
+
+        if (sizeChangeListener != null) {
+            sizeChangeListener.accept(count);
+        }
+
+        return (int) count;
+    }
+
+    void setSizeChangeListener(Consumer<Long> listener) {
+        sizeChangeListener = listener;
     }
 
     public void persist(Company item) {

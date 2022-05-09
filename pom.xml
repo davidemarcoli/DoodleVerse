@@ -170,6 +170,21 @@
             <artifactId>vaadin-charts-flow</artifactId>
         </dependency>
 <!--        <dependency>-->
+<!--            <groupId>com.flowingcode.vaadin.addons</groupId>-->
+<!--            <artifactId>google-maps</artifactId>-->
+<!--            <version>1.6.0</version>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>com.xdev-software</groupId>
+            <artifactId>vaadin-maps-leaflet-flow</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.vaadin.elmot</groupId>
+            <artifactId>vaadin-geo-location-flow-v14</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+<!--        <dependency>-->
 <!--            <groupId>com.github.appreciated</groupId>-->
 <!--            <artifactId>color-picker-field-flow</artifactId>-->
 <!--            <version>2.0.0.beta6</version>-->

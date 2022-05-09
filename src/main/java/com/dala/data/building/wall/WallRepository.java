@@ -7,5 +7,5 @@ import java.util.Optional;
 
 @Repository
 public interface WallRepository extends JpaRepository<Wall, Long> {
-    public Optional<Wall> getWallByType(String type);
+    Optional<Wall> getWallByType(String type);
 }

@@ -4,12 +4,13 @@ import com.dala.data.person.Person;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Setter @Getter
-@AllArgsConstructor @NoArgsConstructor
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @ToString
 public class Department {
     @Id

@@ -10,7 +10,6 @@ import com.github.javafaker.Faker;
 import com.github.javafaker.service.FakeValuesService;
 import com.github.javafaker.service.RandomService;
 import com.vaadin.flow.spring.annotation.SpringComponent;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
@@ -21,15 +20,25 @@ import java.util.Random;
 
 @SpringComponent
 public class FakeGenerator {
+    private static FakeGenerator instance;
     FakeValuesService fakeValuesService = new FakeValuesService(new Locale("de-CH.yml"), new RandomService());
     Faker faker = new Faker(new Locale("de-CH"));
     Random random = new Random();
-
     @Autowired
     private PersonRepository personRepository;
-
     @Autowired
     private DepartmentRepository departmentRepository;
+
+    private FakeGenerator() {
+    }
+
+    @Bean
+    public static FakeGenerator getInstance() {
+        if (instance == null) {
+            instance = new FakeGenerator();
+        }
+        return instance;
+    }
 
     public ArrayList<Person> generateRandomPersons(int count) {
         ArrayList<Person> persons = new ArrayList<>();
@@ -92,10 +101,6 @@ public class FakeGenerator {
                 Department childDepartment = new Department(0L, faker.commerce().department(), departmentWorkers, null);
                 System.out.println(childDepartment);
 
-//                if (departmentRepository.exists(childDepartment)) {
-//
-//                }
-
                 childDepartment = departmentRepository.saveAndFlush(childDepartment);
                 childDepartments.add(childDepartment);
             }
@@ -111,18 +116,5 @@ public class FakeGenerator {
 
     public double randomBetween(double min, double max) {
         return random.nextDouble(max - min + 1) + min;
-    }
-
-    private static FakeGenerator instance;
-
-    @Bean
-    public static FakeGenerator getInstance() {
-        if (instance == null) {
-            instance = new FakeGenerator();
-        }
-        return instance;
-    }
-
-    private FakeGenerator() {
     }
 }

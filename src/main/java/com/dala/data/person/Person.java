@@ -3,7 +3,10 @@ package com.dala.data.person;
 import com.dala.data.building.house.House;
 import com.dala.data.generator.FakeGenerator;
 import com.dala.utils.MathUtils;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 

@@ -3,6 +3,7 @@ package com.dala.data.generator;
 import com.dala.data.building.ceiling.Ceiling;
 import com.dala.data.building.ceiling.CeilingRepository;
 import com.dala.data.building.house.House;
+import com.dala.data.building.house.HouseBuilder;
 import com.dala.data.building.house.HouseRepository;
 import com.dala.data.building.size.Size;
 import com.dala.data.building.size.SizeRepository;
@@ -10,19 +11,19 @@ import com.dala.data.building.wall.Wall;
 import com.dala.data.building.wall.WallRepository;
 import com.dala.data.company.CompanyRepository;
 import com.dala.data.person.PersonRepository;
-import com.dala.security.Role;
 import com.dala.data.user.User;
 import com.dala.data.user.UserRepository;
+import com.dala.security.Role;
 import com.vaadin.flow.spring.annotation.SpringComponent;
-
-import java.awt.*;
-import java.util.Collections;
-
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.awt.*;
+import java.util.Collections;
+import java.util.Set;
 
 @SpringComponent
 @Log4j2
@@ -73,8 +74,7 @@ public class DataGenerator {
                 admin.setHashedPassword(passwordEncoder.encode("lazar"));
                 admin.setProfilePictureUrl(
                         "https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80");
-//            admin.setRoles(Set.of(Role.USER, Role.ADMIN));
-                admin.setRoles(Collections.singleton(Role.ADMIN));
+                admin.setRoles(Set.of(Role.USER, Role.ADMIN));
                 userRepository.save(admin);
             }
 
@@ -91,11 +91,12 @@ public class DataGenerator {
             saveWallIfNotExists("Brick");
 
             if (houseRepository.count() < 1) {
-                House house = new House();
-                house.setCeilingColor(Integer.toHexString(Color.blue.getRGB()).substring(2));
-//                house.setCeiling_color(Integer.toHexString(Objects.requireNonNull(getColorByName("blue")).getRGB()).substring(2));
-                house.setSize(sizeRepository.getSizeByType("Extra Wide").orElse(null));
-                house.setWall(wallRepository.getWallByType("Wood").orElse(null));
+                House house = new HouseBuilder()
+                        .ceilingColor(Integer.toHexString(Color.blue.getRGB()).substring(2))
+                        .size(sizeRepository.getSizeByType("Extra Wide").orElse(null))
+                        .wall(wallRepository.getWallByType("Wood").orElse(null))
+                        .build();
+
                 houseRepository.save(house);
             }
 
@@ -107,8 +108,6 @@ public class DataGenerator {
             if (companyRepository.count() < 5) {
                 companyRepository.saveAllAndFlush(FakeGenerator.getInstance().generateCompanies(5));
             }
-
-//            HouseImageUtils.houseImageUtilsBean().generateHouseImages();
 
             log.info("Generated data");
 
