@@ -33,9 +33,7 @@ import java.util.List;
 public class CityOverviewView extends VerticalLayout {
     private final HouseRepository houseRepository;
     private final CompanyRepository companyRepository;
-
     HouseImageUtils houseImageUtils = HouseImageUtils.getInstance();
-
     @Autowired
     public CityOverviewView(HouseRepository houseRepository, CompanyRepository companyRepository) {
         this.houseRepository = houseRepository;
@@ -43,7 +41,6 @@ public class CityOverviewView extends VerticalLayout {
 
         setupPage();
     }
-
     public void setupPage() {
         List<House> houses = houseRepository.findAll();
         List<Company> companies = companyRepository.findAll();
