@@ -64,3 +64,6 @@ Once the Docker image is correctly built, you can test it locally using
 ```
 docker run -p 8080:8080 doodleverse:latest
 ```
+
+
+<!-- Security scan triggered at 2025-10-08 08:49:44 -->
